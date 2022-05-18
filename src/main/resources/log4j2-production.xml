@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+	<Properties>
+		<Property name="LOG_DIR">${sys:catalina.base}/logs</Property>
+        <Property name="LOG_PATTERN">%style{%d{DEFAULT}}{dim,green} %highlight{%-5level}{STYLE=Logback} %style{[%22t]}{dim,green} %style{%36C{1.}}{cyan} %style{:}{dim,green} %msg%n%red{%throwable}</Property>
+    </Properties>
+
+    <Appenders>
+    
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+		<RollingFile name="LogToFile" fileName="${LOG_DIR}/paperless.log" 
+			filePattern="${LOG_DIR}/paperless.%d{MM-dd-yyyy}-%i.log">
+			<PatternLayout pattern="${LOG_PATTERN}"/>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="30"/>
+		</RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.tiffa.wd.elock.paperless" level="INFO" additivity="false">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+        <Logger name="org.springframework.jdbc.core.JdbcTemplate" level="INFO" additivity="false">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+        <Logger name="org.springframework.boot" level="ERROR" additivity="false">
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+
+        <Root level="ERROR">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

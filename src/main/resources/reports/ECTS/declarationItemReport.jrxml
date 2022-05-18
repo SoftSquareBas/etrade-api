@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="declarationItemReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="586b1d80-ecd1-4ce0-ad7e-3592af07e83d">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="2826"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.freeze.row" value="2"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JasperReportDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="detail-style" vTextAlign="Top" isBlankWhenNull="true" fontName="TH Sarabun New" fontSize="10">
+		<box leftPadding="3" rightPadding="3"/>
+	</style>
+	<style name="header-style" mode="Opaque" forecolor="#000000" backcolor="rgba(204, 204, 204, 0.0)" hTextAlign="Center" vTextAlign="Middle" fontName="TH Sarabun New" fontSize="10" isBold="true">
+		<box leftPadding="3" rightPadding="3"/>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#CCCCCC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="rgba(255, 255, 255, 0.0)">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="rgba(255, 255, 255, 0.0)">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="rgba(251, 253, 255, 0.0)"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="declaraionItemDataSet" uuid="3f0214e9-be19-412c-a6bc-ea4d46ea33c1">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JasperReportDataAdapter.xml"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="275"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="720"/>
+		<parameter name="companyId" class="java.lang.Integer"/>
+		<parameter name="branchId" class="java.lang.Integer"/>
+		<parameter name="dateFrom" class="java.util.Date"/>
+		<parameter name="dateTo" class="java.util.Date"/>
+		<parameter name="declarationNo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT c.cpn_code AS "companyCode", 
+	  	b.branch_code AS "branchCode", 
+	  	t.declarationnumber AS "declarationNo", 
+	  	t.declarationacceptdate AS "declarationDate", 
+	  	t.invoiceno AS "masterInvoiceNo", 
+	  	t.invoicedate AS "masterInvoiceDate", 
+	  	t.itemno AS "itemNo", 
+	  	t.productcode AS "partNo", 
+	  	t.engdescofgoods AS "itemDescEn", 
+	  	t.thaidescofgoods AS "itemDescTh", 
+	  	t.tariffcode AS "tariffCode", 
+	  	t.quantityunit AS "unit", 
+	  	NVL(t.quantity,0) AS "declarationQty", 
+	  	NVL(t.deliveryqty,0) AS "deliveryQty", 
+	  	NVL(t.remainqty,0) AS "remainQty", 
+	  	NVL(t.shquantity,0) AS "shortQty", 
+	  	NVL(t.netweight,0) AS "netWeight", 
+	  	NVL(t.netweight,0) - NVL(t.remainnetweight,0) AS "deliveryNetWeight", 
+	  	NVL(t.invoiceamountbaht,0) AS "valueBaht", 
+	  	NVL(t.invoiceamountbaht,0) - NVL(t.remainvalue,0) AS "deliveryValueBaht", 
+	  	(NVL(t.invoiceamountbaht,0) - NVL(t.remainvalue,0)) / NVL(t.exchangerate,0) AS "deliveryValueUsd", 
+	  	t.packageunit AS "noOfPackageUnit", 
+	  	NVL(t.packageamount,0) AS "noOfPackage", 
+	  	NVL(t.remaintotalpackageamount,0) AS "deliveryNoOfPackage", 
+	  	NVL(t.packageamount,0) - NVL(t.remaintotalpackageamount,0) AS "remainNoOfPackage" 
+FROM tblexportdetail t 
+	  	JOIN company c ON c.cpn_id = t.cpn_id 
+	  	JOIN branch b ON b.branch_id = t.branch_id
+WHERE t.flagcancel IS NULL 
+	  	AND t.declarationnumber IS NOT NULL
+	  	AND (t.cpn_id = $P{companyId} OR $P{companyId} IS NULL)
+	  	AND (t.branch_id = $P{branchId} OR $P{branchId} IS NULL)
+	  	AND (t.declarationacceptdate >= TRUNC($P{dateFrom}) OR $P{dateFrom} IS NULL)
+	  	AND (t.declarationacceptdate < TRUNC($P{dateTo} + 1) OR $P{dateTo} IS NULL)
+	  	AND (t.declarationnumber = $P{declarationNo} OR $P{declarationNo} IS NULL)
+ORDER BY c.cpn_code, b.branch_code, t.declarationnumber, t.itemno]]>
+		</queryString>
+		<field name="companyCode" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="companyCode"/>
+			<property name="com.jaspersoft.studio.field.label" value="companyCode"/>
+		</field>
+		<field name="branchCode" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="branchCode"/>
+			<property name="com.jaspersoft.studio.field.label" value="branchCode"/>
+		</field>
+		<field name="declarationNo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="declarationNo"/>
+			<property name="com.jaspersoft.studio.field.label" value="declarationNo"/>
+		</field>
+		<field name="declarationDate" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="declarationDate"/>
+			<property name="com.jaspersoft.studio.field.label" value="declarationDate"/>
+		</field>
+		<field name="masterInvoiceNo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="masterInvoiceNo"/>
+			<property name="com.jaspersoft.studio.field.label" value="masterInvoiceNo"/>
+		</field>
+		<field name="masterInvoiceDate" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="masterInvoiceDate"/>
+			<property name="com.jaspersoft.studio.field.label" value="masterInvoiceDate"/>
+		</field>
+		<field name="itemNo" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="itemNo"/>
+			<property name="com.jaspersoft.studio.field.label" value="itemNo"/>
+		</field>
+		<field name="partNo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="partNo"/>
+			<property name="com.jaspersoft.studio.field.label" value="partNo"/>
+		</field>
+		<field name="itemDescEn" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="itemDescEn"/>
+			<property name="com.jaspersoft.studio.field.label" value="itemDescEn"/>
+		</field>
+		<field name="itemDescTh" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="itemDescTh"/>
+			<property name="com.jaspersoft.studio.field.label" value="itemDescTh"/>
+		</field>
+		<field name="tariffCode" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="tariffCode"/>
+			<property name="com.jaspersoft.studio.field.label" value="tariffCode"/>
+		</field>
+		<field name="unit" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="unit"/>
+			<property name="com.jaspersoft.studio.field.label" value="unit"/>
+		</field>
+		<field name="declarationQty" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="declarationQty"/>
+			<property name="com.jaspersoft.studio.field.label" value="declarationQty"/>
+		</field>
+		<field name="deliveryQty" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="deliveryQty"/>
+			<property name="com.jaspersoft.studio.field.label" value="deliveryQty"/>
+		</field>
+		<field name="remainQty" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="remainQty"/>
+			<property name="com.jaspersoft.studio.field.label" value="remainQty"/>
+		</field>
+		<field name="shortQty" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="shortQty"/>
+			<property name="com.jaspersoft.studio.field.label" value="shortQty"/>
+		</field>
+		<field name="netWeight" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="netWeight"/>
+			<property name="com.jaspersoft.studio.field.label" value="netWeight"/>
+		</field>
+		<field name="deliveryNetWeight" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="deliveryNetWeight"/>
+			<property name="com.jaspersoft.studio.field.label" value="deliveryNetWeight"/>
+		</field>
+		<field name="valueBaht" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="valueBaht"/>
+			<property name="com.jaspersoft.studio.field.label" value="valueBaht"/>
+		</field>
+		<field name="deliveryValueBaht" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="deliveryValueBaht"/>
+			<property name="com.jaspersoft.studio.field.label" value="deliveryValueBaht"/>
+		</field>
+		<field name="deliveryValueUsd" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="deliveryValueUsd"/>
+			<property name="com.jaspersoft.studio.field.label" value="deliveryValueUsd"/>
+		</field>
+		<field name="noOfPackageUnit" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="noOfPackageUnit"/>
+			<property name="com.jaspersoft.studio.field.label" value="noOfPackageUnit"/>
+		</field>
+		<field name="noOfPackage" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="noOfPackage"/>
+			<property name="com.jaspersoft.studio.field.label" value="noOfPackage"/>
+		</field>
+		<field name="deliveryNoOfPackage" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="deliveryNoOfPackage"/>
+			<property name="com.jaspersoft.studio.field.label" value="deliveryNoOfPackage"/>
+		</field>
+		<field name="remainNoOfPackage" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="remainNoOfPackage"/>
+			<property name="com.jaspersoft.studio.field.label" value="remainNoOfPackage"/>
+		</field>
+	</subDataset>
+	<parameter name="companyId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="branchId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="declarationNo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 1 AS "row" FROM DUAL]]>
+	</queryString>
+	<field name="row" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="row"/>
+		<property name="com.jaspersoft.studio.field.label" value="row"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<componentElement>
+				<reportElement x="0" y="0" width="800" height="30" uuid="3bc45129-64ac-431e-81ad-0092b2ee2ae4">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="declaraionItemDataSet" uuid="76638702-bc23-4bbe-a668-76ed554d6a84">
+						<datasetParameter name="companyId">
+							<datasetParameterExpression><![CDATA[$P{companyId}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="branchId">
+							<datasetParameterExpression><![CDATA[$P{branchId}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="dateFrom">
+							<datasetParameterExpression><![CDATA[$P{dateFrom}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="dateTo">
+							<datasetParameterExpression><![CDATA[$P{dateTo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="declarationNo">
+							<datasetParameterExpression><![CDATA[$P{declarationNo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="80" uuid="a1981e2a-11cd-486c-9846-4e644f5781de">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="c13a059d-1206-40a1-b8c5-86dc995d64e3"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Company Code"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="52dcf199-6e21-4da0-b930-09de494b3988">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{companyCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="23be8287-73d3-421b-af8b-6102c2c8573e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="70" height="15" uuid="878eaeba-268d-4715-83e3-74aaecc45152"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Branch Code"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="70" height="15" uuid="b35748b1-5455-49a1-bfe8-e9d79367dcd5">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{branchCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="1c7fa145-13af-43b8-a0e4-0f77050b0004">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="0dc50dee-f53b-48bb-8e04-8274bd571eee"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Declaration No."]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="0eb9af86-c691-4db1-b365-06d03f1eb8c1">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{declarationNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="673d4380-f405-4240-ad65-11dc5060f11f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="2498455c-c682-4735-8167-2ad8821aa79a"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Declaration Date"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="dd/MM/yyyy">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="8a2941ae-b29d-4307-b267-75d37cd98cb9">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["dd/mm/yyyy"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{declarationDate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="08759c49-a3aa-4a28-bc7f-5d0d7ff1fad8">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="90" height="15" uuid="5bca7bcf-55cb-4b59-adb6-e2e207b3cad5"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Master Invoice No."]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="90" height="15" uuid="1ef48c4a-21dd-47de-adf6-d124d9f0c98d">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{masterInvoiceNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="d0fe5f45-4bea-41b4-b42b-9fba976ff8df">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="00159ac6-832a-46bf-9e28-7bcc556767c8"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Master Invoice Date"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="dd/MM/yyyy">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="813c6180-3fdc-41ec-bbb6-19aba277d584">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["dd/mm/yyyy"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{masterInvoiceDate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="c8c02a84-67c8-46f8-b55c-d62a9d6ad5f4">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="50" height="15" uuid="2f916601-4feb-4d13-9bce-a0a1a2f1dd3e"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Item No."]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="50" height="15" uuid="c301f808-fce6-4486-ad26-a3b97eb55317">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{itemNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="394c967a-91cb-4e7b-a2a0-03eb58d3b4f3">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="60" height="15" uuid="4f24dacf-babb-4143-9383-1b2106b5a4bc"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Part No."]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="60" height="15" uuid="e816dda0-eafa-4a50-9bc2-883f78549a56">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{partNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="312dac73-d21b-4d35-8c5b-3f6c10891adb">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="110" height="15" uuid="747773d7-cf65-48a3-9232-f25db61d4d54"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Item Description"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="110" height="15" uuid="486d3678-0dc9-4142-a3a0-84d68eb33845">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left"/>
+								<textFieldExpression><![CDATA[$F{itemDescEn}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="130" uuid="38f0bad0-554d-46f9-824c-b2f83906f451">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="130" height="15" uuid="9f9e692a-30f8-4272-9f8b-bb9229e7ceb4"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["ชื่อสินค้า"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="130" height="15" uuid="0294c9e1-56a1-4870-830e-f74f021991e0">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left"/>
+								<textFieldExpression><![CDATA[$F{itemDescTh}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="71d43c71-da7c-4da7-a78c-9bcd4c4baecb">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="70" height="15" uuid="9b95f165-eb23-4035-b7df-ce28bdb9dec5"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Tariff Code"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="70" height="15" uuid="a9c33ce7-3b39-49e9-95c4-30ee2818de24">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{tariffCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="0ccf1a2e-a69f-43bf-806d-585c9fdeb4b6">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column12"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="50" height="15" uuid="07b0c10c-8c05-44e0-b535-cddfe65aabd1"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Unit"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="50" height="15" uuid="fdbc5d18-e9dd-475f-b13e-d670dd9e69eb">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{unit}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="4433861a-7136-42e5-8e4f-3ed6130b64cd">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column13"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="90" height="15" uuid="f09e9f67-73cc-4adf-98b3-818e3f977a38"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Declaration Qty"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0">
+								<reportElement style="detail-style" x="0" y="0" width="90" height="15" uuid="9dac7921-e61d-4c46-8460-7ba210e16384">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{declarationQty}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="5dde6087-1c42-4440-ae39-2add49f62278">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column14"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="9f512135-d13c-40be-9565-471941c40fde"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Delivery Qty"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="5ce06ceb-b49b-4ed3-9333-837a31c3fdbe">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{deliveryQty}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="b06bd68d-397e-4470-8d60-e45bf2df671f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column15"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="67fc5d5c-87cf-4c3f-beea-3c31492cadba"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Remain Qty"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="946b06a7-dd2a-4ae7-b89c-f51dfe22ec4b">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{remainQty}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="8c46e8f7-b20b-48d6-9bdb-dca777a6b17c">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column16"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="70" height="15" uuid="ac3a4f8c-d5ac-4197-8954-962add9e7a1b"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Short Qty"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0">
+								<reportElement style="detail-style" x="0" y="0" width="70" height="15" uuid="0d7ae986-5740-4341-a56e-989501e9d586">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{shortQty}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="108df992-e3cd-4ba5-927d-827635e34983">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column17"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="90" height="15" uuid="af603fb1-5100-4fd1-8cca-7dd2427b8cbc"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Net Weight"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="90" height="15" uuid="ed643f97-8541-477e-bed3-e262365f3580">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{netWeight}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="b890fd14-09ff-4dd5-8d5f-ea1558eaedce">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column18"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="90" height="15" uuid="a9b065fa-525d-499c-9e5a-814dfd87474c"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Delivery Net Weight"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="90" height="15" uuid="b6dd7556-2aa6-41cd-86b0-f16dc77ad7ac">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{deliveryNetWeight}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="dbbc82cb-5285-4b42-ba71-ab4dff352f79">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column19"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="abd05307-c99a-40ba-ba24-77aca15fd30f"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Value (Baht)"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="5f29fe91-1968-4434-b867-2120e0179611">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{valueBaht}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="0cd3e55b-09c8-4944-af8b-9d709e99ebc6">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column20"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="8d7672f2-52bc-4ec3-8284-9a1b20deae90"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Delivery Value (Baht)"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="7323694c-6ca6-4dcd-b10a-1c132e369ccb">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{deliveryValueBaht}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="b6bca585-bb45-491d-89da-0af1781f1a73">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column21"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="90" height="15" uuid="553cab73-1bc8-4d36-9f1d-7cbcda497a0c"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Delivery Value (USD)"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="90" height="15" uuid="042a34ee-ee32-4e5e-a5e7-262fda2aaa98">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{deliveryValueUsd}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="5115d961-f286-4782-b7d4-fc213b68c578">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column22"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="90" height="15" uuid="a63ff745-fecb-44c5-9deb-7d0682a4e25a"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["No. of Package Unit"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="90" height="15" uuid="dd59d181-f9e2-43d1-8a52-2bdba3878644">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{noOfPackageUnit}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="99f91ca6-5240-47df-89c2-d7f703b7540f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column23"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="80" height="15" uuid="76eaaa1d-eebf-44f0-8723-b7b318c9d360"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["No. of Package"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="80" height="15" uuid="cf074193-6746-4332-a778-8ac008962ab9">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{deliveryValueUsd}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="900270f9-4f35-42ac-9fc3-22828a175029">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column24"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="110" height="15" uuid="32579b4a-38c5-40ad-8692-dd5dd8d8ea41"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Delivery No. of Package"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="110" height="15" uuid="2ad5f8b1-918e-4a04-a5e1-2359aa74e70f">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{deliveryNoOfPackage}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="23ebe6f5-20e8-4a30-805b-a98c2d3f2e6d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column25"/>
+						<jr:tableHeader style="Table_TH" height="15" rowSpan="1">
+							<textField>
+								<reportElement style="header-style" x="0" y="0" width="110" height="15" uuid="1bb916fb-5a98-4075-817d-94a7f0f61fad"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Remain No. of Package"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField pattern="#,##0.00">
+								<reportElement style="detail-style" x="0" y="0" width="110" height="15" uuid="59fbe172-8abf-4d78-bebb-5fc2a4389177">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+									<propertyExpression name="net.sf.jasperreports.export.xls.pattern"><![CDATA["#,##0.00"]]></propertyExpression>
+								</reportElement>
+								<textElement textAlignment="Right"/>
+								<textFieldExpression><![CDATA[$F{remainNoOfPackage}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

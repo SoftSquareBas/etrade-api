@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false" monitoring="autodetect" dynamicConfig="true"
+	maxBytesLocalHeap="64M"
+	maxBytesLocalDisk="128M"
+	>
+	
+	<cache name="stationComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="uomComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="truckComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="companyComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="branchComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="driverComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="weightComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="packageComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<cache name="routeComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+</ehcache>

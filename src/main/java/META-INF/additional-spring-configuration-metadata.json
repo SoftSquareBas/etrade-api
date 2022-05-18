@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "app.mvn.artifactId",
+    "type": "java.lang.String",
+    "description": "A description for 'app.mvn.artifactId'"
+  },
+  {
+    "name": "app.mvn.groupId",
+    "type": "java.lang.String",
+    "description": "A description for 'app.mvn.groupId'"
+  },
+  {
+    "name": "app.mvn.version",
+    "type": "java.lang.String",
+    "description": "A description for 'app.mvn.version'"
+  },
+  {
+    "name": "app.report.location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.report.location'"
+  },
+  {
+    "name": "app.report.virtualizer.max-size",
+    "type": "java.lang.String",
+    "description": "A description for 'app.report.virtualizer.max-size'"
+  }
+]}

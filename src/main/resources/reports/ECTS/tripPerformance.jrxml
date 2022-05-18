@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tripPerformance" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="586b1d80-ecd1-4ce0-ad7e-3592af07e83d">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="2826"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.freeze.row" value="6"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JasperReportDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="337"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="656"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+	<style name="detail-style" vTextAlign="Top" isBlankWhenNull="true" fontName="TH Sarabun New">
+		<box leftPadding="3" rightPadding="3"/>
+	</style>
+	<style name="header-style" mode="Opaque" forecolor="#000000" backcolor="#CCCCCC" vTextAlign="Middle" fontName="TH Sarabun New" fontSize="10" isBold="true">
+		<box leftPadding="3" rightPadding="3"/>
+	</style>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="font-style" fontName="TH Sarabun New" fontSize="10"/>
+	<subDataset name="branch_dataset" whenResourceMissingType="Empty" uuid="f2513166-2b14-412a-b44f-9e4468844e2e">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JasperReportDataAdapter.xml"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="298"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="696"/>
+		<parameter name="companyId" class="java.lang.Integer"/>
+		<parameter name="branchId" class="java.lang.Integer"/>
+		<parameter name="periodFrom" class="java.util.Date"/>
+		<parameter name="periodTo" class="java.util.Date"/>
+		<queryString>
+			<![CDATA[WITH time_table AS (
+	SELECT
+	ADD_MONTHS(
+		TRUNC($P{periodFrom},'MONTH'), 
+		(FLOOR(MONTHS_BETWEEN($P{periodTo}, $P{periodFrom})) + 1 - ROWNUM)
+	) AS month_year
+	FROM DUAL CONNECT BY LEVEL <= FLOOR(MONTHS_BETWEEN($P{periodTo}, $P{periodFrom})) + 1
+)
+SELECT r.branch_code AS "branch_code", 
+	r.month_year AS "period", 
+	r.route AS "route", 
+	SUM(r.trip) AS "trip"
+FROM (
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		c.display_name AS route,
+		0 AS trip,
+		1 AS seq,
+		c.ordinal AS ordinal
+	FROM route_config c
+		JOIN branch b ON b.cpn_id = c.cpn_id AND b.branch_id = c.branch_id
+		JOIN time_table t ON 1 = 1
+	WHERE c.cpn_id = $P{companyId}
+		AND c.branch_id = $P{branchId} 
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		'In time' AS route,
+		0 AS trip,
+		2 AS seq,
+		1 AS ordinal
+	FROM branch b
+		JOIN time_table t ON 1 = 1
+	WHERE b.cpn_id = $P{companyId}
+		AND b.branch_id = $P{branchId} 
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		'Late' AS route,
+		0 AS trip,
+		2 AS seq,
+		2 AS ordinal
+	FROM branch b
+		JOIN time_table t ON 1 = 1
+	WHERE b.cpn_id = $P{companyId}
+		AND b.branch_id = $P{branchId} 
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		'Tamper' AS route,
+		0 AS trip,
+		2 AS seq,
+		3 AS ordinal
+	FROM branch b
+		JOIN time_table t ON 1 = 1
+	WHERE b.cpn_id = $P{companyId}
+		AND b.branch_id = $P{branchId} 
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(r.rel_startdate, 'MON YYYY') AS month_year, 
+		TO_CHAR(r.rel_startdate, 'YYYYMM') AS month_year_num, 
+		c.display_name AS route,
+		1 AS trip,
+		1 AS seq,
+		c.ordinal AS ordinal
+	FROM relation r
+		JOIN transfer t ON t.cpn_id = r.cpn_id AND t.branch_id = r.branch_id AND r.trf_id = t.trf_id
+		JOIN branch b ON b.cpn_id = r.cpn_id AND b.branch_id = r.branch_id
+		JOIN route_config c ON c.cpn_id = b.cpn_id AND c.branch_id = b.branch_id
+			AND c.trf_from = t.trf_from 
+			AND c.trf_to = t.trf_to
+	WHERE r.cpn_id = $P{companyId}
+	    AND r.branch_id = $P{branchId} 
+		AND r.rel_startdate >= TRUNC($P{periodFrom})
+		AND r.rel_startdate < TRUNC($P{periodTo} + 1)
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(r.rel_startdate, 'MON YYYY') AS month_year, 
+		TO_CHAR(r.rel_startdate, 'YYYYMM') AS month_year_num, 
+		(CASE 
+		 	WHEN r.rel_enddate IS NOT NULL AND r.late_flag = 0 AND r.tampered_flag = 0 THEN 'In time' 
+		 	WHEN r.late_flag = 1 THEN 'Late' 
+		 	WHEN r.tampered_flag = 1 THEN 'Tamper' 
+		 	ELSE NULL 
+		 END) AS route,
+		1 AS trip,
+		2 AS seq,
+		(CASE 
+		 	WHEN r.rel_enddate IS NOT NULL AND r.late_flag = 0 AND r.tampered_flag = 0 THEN 1 
+		 	WHEN r.late_flag = 1 THEN 2 
+		 	WHEN r.tampered_flag = 1 THEN 3 
+		 	ELSE 4 
+		 END) AS ordinal
+	FROM relation r
+		JOIN transfer t ON t.cpn_id = r.cpn_id AND t.branch_id = r.branch_id AND r.trf_id = t.trf_id
+		JOIN branch b ON b.cpn_id = r.cpn_id AND b.branch_id = r.branch_id
+	WHERE r.cpn_id = $P{companyId}
+	    AND r.branch_id = $P{branchId} 
+		AND r.rel_startdate >= TRUNC($P{periodFrom})
+		AND r.rel_startdate < TRUNC($P{periodTo} + 1)
+		AND (
+			(r.rel_enddate IS NOT NULL AND r.late_flag = 0 AND r.tampered_flag = 0)
+			OR (r.late_flag = 1)
+			OR (r.tampered_flag = 1)
+		)
+) r
+GROUP BY r.branch_code, r.month_year, r.month_year_num, r.route, r.seq, r.ordinal
+ORDER BY r.branch_code, r.month_year_num, r.seq, r.ordinal]]>
+		</queryString>
+		<field name="branch_code" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="branch_code"/>
+			<property name="com.jaspersoft.studio.field.label" value="branch_code"/>
+		</field>
+		<field name="period" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="period"/>
+			<property name="com.jaspersoft.studio.field.label" value="period"/>
+		</field>
+		<field name="route" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="route"/>
+			<property name="com.jaspersoft.studio.field.label" value="route"/>
+		</field>
+		<field name="trip" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="trip"/>
+			<property name="com.jaspersoft.studio.field.label" value="trip"/>
+		</field>
+	</subDataset>
+	<subDataset name="branch_dblink_dataset" uuid="588f35a3-1583-4a94-bdb9-eaca47511df1">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JasperReportDataAdapter.xml"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="167"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="828"/>
+		<parameter name="companyId" class="java.lang.Integer"/>
+		<parameter name="branchId" class="java.lang.Integer"/>
+		<parameter name="periodFrom" class="java.util.Date"/>
+		<parameter name="periodTo" class="java.util.Date"/>
+		<parameter name="dbLink" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[WITH time_table AS (
+	SELECT
+	ADD_MONTHS(
+		TRUNC($P{periodFrom},'MONTH'), 
+		(FLOOR(MONTHS_BETWEEN($P{periodTo}, $P{periodFrom})) + 1 - ROWNUM)
+	) AS month_year
+	FROM DUAL CONNECT BY LEVEL <= FLOOR(MONTHS_BETWEEN($P{periodTo}, $P{periodFrom})) + 1
+)
+SELECT r.branch_code AS "branch_code", 
+	r.month_year AS "period", 
+	r.route AS "route", 
+	SUM(r.trip) AS "trip"
+FROM (
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		c.display_name AS route,
+		0 AS trip,
+		1 AS seq,
+		c.ordinal AS ordinal
+	FROM route_config c
+		JOIN branch b ON b.cpn_id = c.cpn_id AND b.branch_id = c.branch_id
+		JOIN time_table t ON 1 = 1
+	WHERE c.cpn_id = $P{companyId}
+		AND c.branch_id = $P{branchId}
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		'In time' AS route,
+		0 AS trip,
+		2 AS seq,
+		1 AS ordinal
+	FROM branch b
+		JOIN time_table t ON 1 = 1
+	WHERE b.cpn_id = $P{companyId}
+		AND b.branch_id = $P{branchId}
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		'Late' AS route,
+		0 AS trip,
+		2 AS seq,
+		2 AS ordinal
+	FROM branch b
+		JOIN time_table t ON 1 = 1
+	WHERE b.cpn_id = $P{companyId}
+		AND b.branch_id = $P{branchId}
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(t.month_year, 'MON YYYY') AS month_year, 
+		TO_CHAR(t.month_year, 'YYYYMM') AS month_year_num,
+		'Tamper' AS route,
+		0 AS trip,
+		2 AS seq,
+		3 AS ordinal
+	FROM branch b
+		JOIN time_table t ON 1 = 1
+	WHERE b.cpn_id = $P{companyId}
+		AND b.branch_id = $P{branchId}
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(r.rel_startdate, 'MON YYYY') AS month_year, 
+		TO_CHAR(r.rel_startdate, 'YYYYMM') AS month_year_num, 
+		c.display_name AS route,
+		1 AS trip,
+		1 AS seq,
+		c.ordinal AS ordinal
+	FROM relation$P!{dbLink} r
+		JOIN transfer$P!{dbLink} t ON t.cpn_id = r.cpn_id AND r.trf_id = t.trf_id
+		JOIN branch b ON b.cpn_id = r.cpn_id
+		JOIN route_config c ON c.cpn_id = b.cpn_id AND c.branch_id = b.branch_id
+			AND c.trf_from = t.trf_from 
+			AND c.trf_to = t.trf_to
+	WHERE r.cpn_id = $P{companyId}
+	    AND b.branch_id = $P{branchId}
+		AND r.rel_startdate >= TRUNC($P{periodFrom})
+		AND r.rel_startdate < TRUNC($P{periodTo} + 1)
+	UNION ALL
+	SELECT b.branch_code,
+		TO_CHAR(r.rel_startdate, 'MON YYYY') AS month_year, 
+		TO_CHAR(r.rel_startdate, 'YYYYMM') AS month_year_num, 
+		(CASE 
+		 	WHEN r.rel_enddate IS NOT NULL AND r.late_flag = 0 AND r.tampered_flag = 0 THEN 'In time' 
+		 	WHEN r.late_flag = 1 THEN 'Late' 
+		 	WHEN r.tampered_flag = 1 THEN 'Tamper' 
+		 	ELSE NULL 
+		 END) AS route,
+		1 AS trip,
+		2 AS seq,
+		(CASE 
+		 	WHEN r.rel_enddate IS NOT NULL AND r.late_flag = 0 AND r.tampered_flag = 0 THEN 1 
+		 	WHEN r.late_flag = 1 THEN 2 
+		 	WHEN r.tampered_flag = 1 THEN 3 
+		 	ELSE 4 
+		 END) AS ordinal
+	FROM relation$P!{dbLink} r
+		JOIN transfer$P!{dbLink} t ON t.cpn_id = r.cpn_id AND r.trf_id = t.trf_id
+		JOIN branch b ON b.cpn_id = r.cpn_id
+	WHERE b.cpn_id = $P{companyId}
+	    AND b.branch_id = $P{branchId} 
+		AND r.rel_startdate >= TRUNC($P{periodFrom})
+		AND r.rel_startdate < TRUNC($P{periodTo} + 1)
+		AND (
+			(r.rel_enddate IS NOT NULL AND r.late_flag = 0 AND r.tampered_flag = 0)
+			OR (r.late_flag = 1)
+			OR (r.tampered_flag = 1)
+		)
+) r
+GROUP BY r.branch_code, r.month_year, r.month_year_num, r.route, r.seq, r.ordinal
+ORDER BY r.branch_code, r.month_year_num, r.seq, r.ordinal]]>
+		</queryString>
+		<field name="branch_code" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="branch_code"/>
+			<property name="com.jaspersoft.studio.field.label" value="branch_code"/>
+		</field>
+		<field name="period" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="period"/>
+			<property name="com.jaspersoft.studio.field.label" value="period"/>
+		</field>
+		<field name="route" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="route"/>
+			<property name="com.jaspersoft.studio.field.label" value="route"/>
+		</field>
+		<field name="trip" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="trip"/>
+			<property name="com.jaspersoft.studio.field.label" value="trip"/>
+		</field>
+	</subDataset>
+	<parameter name="companyId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="branchId" class="java.lang.Integer"/>
+	<parameter name="periodFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="periodTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="branch_filter" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{branchId} != null ? " AND b.branch_id = " + $P{branchId} : ""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT b.branch_id AS "branch_id",
+	b.branch_code AS "branch_code",
+	COUNT(1) OVER() AS "total_site"
+FROM branch b
+WHERE b.cpn_id = $P{companyId} 
+ $P!{branch_filter} 
+ORDER BY b.branch_code]]>
+	</queryString>
+	<field name="branch_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="branch_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_id"/>
+	</field>
+	<field name="branch_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_code"/>
+	</field>
+	<field name="total_site" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_site"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_site"/>
+	</field>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement style="font-style" x="0" y="0" width="60" height="15" uuid="2a234593-3c35-4021-9bbe-3484d7bd7688">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+					<propertyExpression name="net.sf.jasperreports.export.xls.sheet.name"><![CDATA[$F{branch_code}]]></propertyExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Trip Performance Report"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="font-style" x="0" y="15" width="60" height="15" uuid="e831eed0-7adf-40cf-a2b6-7772c0386424">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Record for " + ($P{periodFrom} !=null ? new  java.text.SimpleDateFormat("dd/MM/yyyy").format($P{periodFrom}) : "")
++ " - " + ($P{periodTo} !=null ? new  java.text.SimpleDateFormat("dd/MM/yyyy").format($P{periodTo}) : "")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="font-style" x="0" y="30" width="60" height="15" uuid="1dac2407-962e-45db-8109-965ef40560fc">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement style="font-style" x="0" y="0" width="60" height="15" uuid="d4c4aadd-5fb1-422b-83fb-44288da06245">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_code} + " Site Performance Record: "]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA["BPI".equals($F{branch_code})]]></printWhenExpression>
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="30" uuid="5d812d89-55f5-427c-bd90-d820c27fc424">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report">
+						<datasetRun subDataset="branch_dblink_dataset" uuid="861242a4-0359-4fcc-90a6-a9534b70b6bf">
+							<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+							<datasetParameter name="companyId">
+								<datasetParameterExpression><![CDATA[$P{companyId}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodFrom">
+								<datasetParameterExpression><![CDATA[$P{periodFrom}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodTo">
+								<datasetParameterExpression><![CDATA[$P{periodTo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="branchId">
+								<datasetParameterExpression><![CDATA[$F{branch_id}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dbLink">
+								<datasetParameterExpression><![CDATA["@DBBPI"]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent" style="Crosstab_CH">
+						<textField>
+							<reportElement style="header-style" stretchType="ContainerHeight" x="0" y="0" width="60" height="15" uuid="4383c9bc-e9df-4da3-a635-7c9079673bdc">
+								<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA["Period"]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="period" width="60" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{period}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="60" height="15" uuid="31c3cb23-8e3f-4bf0-8ce5-9eecf0a9dd21">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{period}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="route" height="15" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{route}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField>
+								<reportElement style="header-style" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="1d60a5f3-a3a9-4761-8cdb-0f313b191b64">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{route}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Transparent" style="Crosstab_CT">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="trip_MEASURE" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{trip}]]></measureExpression>
+				</measure>
+				<crosstabCell width="100" height="15">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField textAdjust="StretchHeight" pattern="#,##0">
+							<reportElement style="detail-style" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="786e613d-ecc2-4047-9922-f4db3156b2bd">
+								<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								<property name="net.sf.jasperreports.export.xls.pattern" value="#,##0"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$V{trip_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="15" columnTotalGroup="route">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+				<crosstabCell width="100" height="0" rowTotalGroup="period">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="period" columnTotalGroup="route">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA["PRB".equals($F{branch_code})]]></printWhenExpression>
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="30" uuid="5d812d89-55f5-427c-bd90-d820c27fc424">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report">
+						<datasetRun subDataset="branch_dblink_dataset" uuid="5e33bc8a-e0d6-4bf9-8666-ff1ce40636ec">
+							<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+							<datasetParameter name="companyId">
+								<datasetParameterExpression><![CDATA[$P{companyId}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodFrom">
+								<datasetParameterExpression><![CDATA[$P{periodFrom}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodTo">
+								<datasetParameterExpression><![CDATA[$P{periodTo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="branchId">
+								<datasetParameterExpression><![CDATA[$F{branch_id}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dbLink">
+								<datasetParameterExpression><![CDATA["@DBPRB"]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent" style="Crosstab_CH">
+						<textField>
+							<reportElement style="header-style" stretchType="ContainerHeight" x="0" y="0" width="60" height="15" uuid="4383c9bc-e9df-4da3-a635-7c9079673bdc">
+								<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA["Period"]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="period" width="60" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{period}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="60" height="15" uuid="31c3cb23-8e3f-4bf0-8ce5-9eecf0a9dd21">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{period}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="route" height="15" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{route}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField>
+								<reportElement style="header-style" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="1d60a5f3-a3a9-4761-8cdb-0f313b191b64">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{route}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Transparent" style="Crosstab_CT">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="trip_MEASURE" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{trip}]]></measureExpression>
+				</measure>
+				<crosstabCell width="100" height="15">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField textAdjust="StretchHeight" pattern="#,##0">
+							<reportElement style="detail-style" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="786e613d-ecc2-4047-9922-f4db3156b2bd">
+								<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								<property name="net.sf.jasperreports.export.xls.pattern" value="#,##0"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$V{trip_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="15" columnTotalGroup="route">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+				<crosstabCell width="100" height="0" rowTotalGroup="period">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="period" columnTotalGroup="route">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[false]]></printWhenExpression>
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="30" uuid="5d812d89-55f5-427c-bd90-d820c27fc424">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report">
+						<datasetRun subDataset="branch_dataset" uuid="ac50322f-c93e-448a-8064-7a3eabc0e26f">
+							<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+							<datasetParameter name="companyId">
+								<datasetParameterExpression><![CDATA[$P{companyId}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodFrom">
+								<datasetParameterExpression><![CDATA[$P{periodFrom}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodTo">
+								<datasetParameterExpression><![CDATA[$P{periodTo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="branchId">
+								<datasetParameterExpression><![CDATA[$F{branch_id}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent" style="Crosstab_CH">
+						<textField>
+							<reportElement style="header-style" stretchType="ContainerHeight" x="0" y="0" width="60" height="15" uuid="4383c9bc-e9df-4da3-a635-7c9079673bdc">
+								<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA["Period"]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="period" width="60" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{period}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement style="detail-style" x="0" y="0" width="60" height="15" uuid="31c3cb23-8e3f-4bf0-8ce5-9eecf0a9dd21">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{period}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="route" height="15" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{route}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField>
+								<reportElement style="header-style" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="1d60a5f3-a3a9-4761-8cdb-0f313b191b64">
+									<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{route}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Transparent" style="Crosstab_CT">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="trip_MEASURE" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{trip}]]></measureExpression>
+				</measure>
+				<crosstabCell width="100" height="15">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField textAdjust="StretchHeight" pattern="#,##0">
+							<reportElement style="detail-style" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="786e613d-ecc2-4047-9922-f4db3156b2bd">
+								<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+								<property name="net.sf.jasperreports.export.xls.pattern" value="#,##0"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$V{trip_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="15" columnTotalGroup="route">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+				<crosstabCell width="100" height="0" rowTotalGroup="period">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="period" columnTotalGroup="route">
+					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement style="font-style" x="0" y="0" width="60" height="15" uuid="84750454-6a3d-41dc-a920-50b5c92e7eef">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+					<property name="net.sf.jasperreports.export.xls.break.after.row" value="true"/>
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT} != $F{total_site}]]></printWhenExpression>
+				</reportElement>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

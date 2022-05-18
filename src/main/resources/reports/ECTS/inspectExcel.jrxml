@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InspectionExport" language="groovy" pageWidth="1780" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1740" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="586b1d80-ecd1-4ce0-ad7e-3592af07e83d">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="2826"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.freeze.row" value="2"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JasperReportDataAdapter.xml"/>
+	<style name="detail-style" vTextAlign="Top" isBlankWhenNull="true" fontName="TH Sarabun New" fontSize="10">
+		<box leftPadding="3" rightPadding="3"/>
+	</style>
+	<style name="header-style" mode="Opaque" forecolor="#000099" backcolor="#CCCCCC" vTextAlign="Middle" fontName="TH Sarabun New" fontSize="10">
+		<box leftPadding="3" rightPadding="3"/>
+	</style>
+	<parameter name="companyId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFrom" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateTo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="origin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dest" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="declarationNo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH invoice_item_declaration AS (
+    SELECT i.cpn_id, i.trf_id,
+        LTRIM(MAX(SYS_CONNECT_BY_PATH(i.declarationnumber,', ')) KEEP (DENSE_RANK LAST ORDER BY curr),', ') AS declarationnumber
+    FROM   (
+        SELECT
+            i.cpn_id, i.trf_id, i.declarationnumber,
+            ROW_NUMBER() OVER (PARTITION BY i.cpn_id, i.trf_id ORDER BY i.declarationnumber) AS curr,
+            ROW_NUMBER() OVER (PARTITION BY i.cpn_id, i.trf_id ORDER BY i.declarationnumber) -1 AS prev
+        FROM (
+            SELECT DISTINCT i.cpn_id, i.trf_id, i.declarationnumber
+            FROM invoice_item@DBBPI i
+            WHERE i.cpn_id = $P{companyId}
+                AND i.declarationnumber IS NOT NULL
+                AND i.declarationnumber LIKE NVL('%' || $P{declarationNo} || '%', '%')
+        ) i
+    ) i
+    GROUP BY i.cpn_id, i.trf_id
+    CONNECT BY i.prev = PRIOR i.curr AND i.cpn_id = PRIOR i.cpn_id AND i.trf_id = PRIOR i.trf_id
+    START WITH i.curr = 1
+), invoice_item_invoice AS (
+    SELECT i.cpn_id, i.trf_id,
+        LTRIM(MAX(SYS_CONNECT_BY_PATH(i.inv_no,', ')) KEEP (DENSE_RANK LAST ORDER BY curr),', ') AS inv_no
+    FROM   (
+        SELECT i.cpn_id, i.trf_id, i.inv_no,
+            ROW_NUMBER() OVER (PARTITION BY i.cpn_id, i.trf_id ORDER BY i.inv_no) AS curr,
+            ROW_NUMBER() OVER (PARTITION BY i.cpn_id, i.trf_id ORDER BY i.inv_no) -1 AS prev
+        FROM (
+            SELECT DISTINCT i.cpn_id, i.trf_id, i.inv_no
+            FROM invoice_item@DBBPI i
+            WHERE i.cpn_id = $P{companyId}
+                AND i.inv_no IS NOT NULL
+        ) i
+    ) i
+    GROUP BY i.cpn_id, i.trf_id
+    CONNECT BY i.prev = PRIOR i.curr AND i.cpn_id = PRIOR i.cpn_id AND i.trf_id = PRIOR i.trf_id
+    START WITH i.curr = 1
+)
+SELECT r.*
+FROM (
+    SELECT
+        d.declarationnumber AS "declarationNo",
+        i.inv_no AS "docNo",
+        r.trf_id AS "refNo",
+        (CASE
+            WHEN r.tampered_flag = 1 THEN 'Tamper'
+            WHEN r.tampered_flag = 0 AND r.late_flag = 1 THEN 'Late'
+            WHEN r.tampered_flag = 0 AND r.late_flag = 0 THEN 'On Time'
+        ELSE '' END) AS "tripStatus",
+        r.tag_code AS "sealNo",
+        r.truck_code AS "truckNo",
+        r.drv_code AS "driver",
+        t.trf_from AS "origin",
+        t.trf_to AS "dest",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 1) AS "description",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 4001) AS "description2",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 8001) AS "description3",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 12001) AS "description4",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 16001) AS "description5",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 20001) AS "description6",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 24001) AS "description7",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 28001) AS "description8",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 32001) AS "description9",
+        DBMS_LOB.SUBSTR(r.to_description, 4000, 36001) AS "description10",
+        r.to_quantity AS "quantity",
+        r.to_bathvalue AS "valueBaht",
+        r.rel_startdate AS "submitTime",
+        r.sealed_time AS "sealTime",
+        r.rel_godate AS "departureTime",
+        r.rel_enddate AS "arrivalTime",
+        r.tampered_time AS "tamper",
+        r.rel_inspect_result AS "resultOrg",
+        r.rel_to_inspect_result AS "resultDest"
+    FROM relation@DBBPI r
+        JOIN transfer@DBBPI t ON t.cpn_id = r.cpn_id AND t.trf_id = r.trf_id
+        JOIN invoice_item_declaration d ON d.cpn_id = r.cpn_id AND d.trf_id = r.trf_id
+        JOIN invoice_item_invoice i ON i.cpn_id = r.cpn_id AND i.trf_id = r.trf_id
+    WHERE
+        r.cpn_id = $P{companyId}
+        AND ( r.rel_startdate >= TO_DATE($P{dateFrom}, 'YYYY-MM-DD') OR $P{dateFrom} IS NULL )
+        AND ( r.rel_startdate <= TO_DATE($P{dateTo}, 'YYYY-MM-DD') OR $P{dateTo} IS NULL )
+        AND ( t.trf_from = $P{origin} OR $P{origin} IS NULL )
+        AND ( t.trf_to = $P{dest} OR $P{dest} IS NULL )
+        AND ( d.declarationnumber LIKE NVL('%' || $P{declarationNo} || '%', '%') )
+) r
+ORDER BY r."declarationNo"]]>
+	</queryString>
+	<field name="declarationNo" class="java.lang.String"/>
+	<field name="docNo" class="java.lang.String"/>
+	<field name="refNo" class="java.lang.String"/>
+	<field name="tripStatus" class="java.lang.String"/>
+	<field name="sealNo" class="java.lang.String"/>
+	<field name="truckNo" class="java.lang.String"/>
+	<field name="driver" class="java.lang.String"/>
+	<field name="origin" class="java.lang.String"/>
+	<field name="dest" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="description2" class="java.lang.String"/>
+	<field name="description3" class="java.lang.String"/>
+	<field name="description4" class="java.lang.String"/>
+	<field name="description5" class="java.lang.String"/>
+	<field name="description6" class="java.lang.String"/>
+	<field name="description7" class="java.lang.String"/>
+	<field name="description8" class="java.lang.String"/>
+	<field name="description9" class="java.lang.String"/>
+	<field name="description10" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.String"/>
+	<field name="valueBaht" class="java.lang.String"/>
+	<field name="submitTime" class="java.sql.Timestamp"/>
+	<field name="sealTime" class="java.sql.Timestamp"/>
+	<field name="departureTime" class="java.sql.Timestamp"/>
+	<field name="arrivalTime" class="java.sql.Timestamp"/>
+	<field name="tamper" class="java.sql.Timestamp"/>
+	<field name="resultOrg" class="java.lang.String"/>
+	<field name="resultDest" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement style="header-style" x="0" y="0" width="116" height="15" uuid="2ce0513d-d573-4c8a-8555-4f62dea38369"/>
+				<textFieldExpression><![CDATA["Declaration No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="116" y="0" width="141" height="15" uuid="daf2884c-1fca-4121-8ed4-1cd35fc421e3"/>
+				<textFieldExpression><![CDATA["Doc No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="257" y="0" width="106" height="15" uuid="7e70141c-6398-43cb-a53c-e20565949b1d"/>
+				<textFieldExpression><![CDATA["Reference No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="363" y="0" width="65" height="15" uuid="9f672a1b-c5c7-439b-b1f5-921e86dbf015"/>
+				<textFieldExpression><![CDATA["Trip status"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="428" y="0" width="80" height="15" uuid="bdd1a49f-4016-4c34-8908-63dab05aa435"/>
+				<textFieldExpression><![CDATA["Seal No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="508" y="0" width="80" height="15" uuid="66d33707-49da-4bb1-9399-2b7e17e2b67a"/>
+				<textFieldExpression><![CDATA["Truck No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="668" y="0" width="66" height="15" uuid="8174896f-4d0d-49e1-bb1e-1ee98ce01241"/>
+				<textFieldExpression><![CDATA["Org."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="734" y="0" width="66" height="15" uuid="9077c8bf-f47b-40b1-b1c4-84d44f897a17"/>
+				<textFieldExpression><![CDATA["Dst."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="800" y="0" width="200" height="15" uuid="89a19906-8b15-433b-90e4-8c91deb9adf9"/>
+				<textFieldExpression><![CDATA["Description"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1000" y="0" width="70" height="15" uuid="1905a508-0802-46a4-ba21-cfadbf7174dd"/>
+				<textFieldExpression><![CDATA["Quantity"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1070" y="0" width="75" height="15" uuid="d48cd015-10f9-4e3e-8f17-b4247a3b6325"/>
+				<textFieldExpression><![CDATA["Value (Baht)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1145" y="0" width="90" height="15" uuid="de8222f8-a571-4668-ae3f-d8a1bb9429a7"/>
+				<textFieldExpression><![CDATA["Submit Date/Time"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1235" y="0" width="90" height="15" uuid="496f6ddf-542c-42d2-9d29-07a124d69228"/>
+				<textFieldExpression><![CDATA["Seal Date/Time"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1325" y="0" width="90" height="15" uuid="53da8daf-5685-4a7a-8b99-b629e7c69c97"/>
+				<textFieldExpression><![CDATA["Dept Date/Time"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1415" y="0" width="90" height="15" uuid="d8bf8f77-0632-4227-8e92-ef72c4687474"/>
+				<textFieldExpression><![CDATA["Arrvl Date/Time"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1505" y="0" width="75" height="15" uuid="efc4b287-d7e9-4438-8b1e-70f70995a4cd"/>
+				<textFieldExpression><![CDATA["Tamper"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1580" y="0" width="80" height="15" uuid="1c23812e-0323-466c-b26e-f39e4f87bb21"/>
+				<textFieldExpression><![CDATA["Org. Result"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="1660" y="0" width="80" height="15" uuid="ed972b3f-7993-4fe6-ae3b-1cf6b3f48ad0"/>
+				<textFieldExpression><![CDATA["Dst. Result"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="header-style" x="588" y="0" width="80" height="15" uuid="47aa0095-1ebd-4bbd-a325-3c1537bab8d3"/>
+				<textFieldExpression><![CDATA["Driver"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement style="detail-style" x="0" y="0" width="116" height="15" uuid="28317c4e-9769-4cb5-ac62-4987549bc465">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{declarationNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="116" y="0" width="141" height="15" uuid="d2c87454-2f64-4416-a11b-a3ef35667a95">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{docNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="257" y="0" width="106" height="15" uuid="a29e1523-7dc1-4d9a-97d7-550b8950325e">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{refNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="363" y="0" width="65" height="15" uuid="b4f99889-48f8-4299-8c53-598091489a40">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{tripStatus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="428" y="0" width="80" height="15" uuid="19d9a395-a096-4f1b-a103-53f037018397">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{sealNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="508" y="0" width="80" height="15" uuid="0045684d-c4fc-467b-bf6d-37acddd57ea2">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{truckNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="668" y="0" width="66" height="15" uuid="f0e442f5-f765-4c31-a91c-b154898a68dd">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{origin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="734" y="0" width="66" height="15" uuid="4face49c-44ee-4167-b68c-795bdfe3b398">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{dest}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="800" y="0" width="200" height="15" uuid="a6f2b600-86eb-4184-9c68-7bcad12bb5dd">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[($F{description} != null) ? $F{description} : "" +
+($F{description2} != null) ? $F{description2} :"" +
+($F{description3} != null) ? $F{description3} :"" +
+($F{description4} != null) ? $F{description4} :"" +
+($F{description5} != null) ? $F{description5} :"" +
+($F{description6} != null) ? $F{description6} :"" +
+($F{description7} != null) ? $F{description7} :"" +
+($F{description8} != null) ? $F{description8} :"" +
+($F{description9} != null) ? $F{description9} :"" +
+($F{description10} != null) ? $F{description10} :""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="1000" y="0" width="70" height="15" uuid="61a10169-eee3-45ad-a944-e718ba81ab3d">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000">
+				<reportElement style="detail-style" x="1070" y="0" width="75" height="15" uuid="f6738c11-132c-41b1-8884-f86114023953">
+					<property name="net.sf.jasperreports.export.xls.pattern" value="#,##0.0000"/>
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valueBaht}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement style="detail-style" x="1145" y="0" width="90" height="15" uuid="7967ee9c-fcd4-4ed1-895c-473c7f0d101b">
+					<property name="net.sf.jasperreports.export.xls.pattern" value="dd/mm/yyyy hh:mm:ss"/>
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{submitTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement style="detail-style" x="1235" y="0" width="90" height="15" uuid="63db3855-0531-442f-b265-2b97028d94f2">
+					<property name="net.sf.jasperreports.export.xls.pattern" value="dd/mm/yyyy hh:mm:ss"/>
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sealTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement style="detail-style" x="1325" y="0" width="90" height="15" uuid="074705b2-e4bd-49fd-8a21-2de52ea4a3c8">
+					<property name="net.sf.jasperreports.export.xls.pattern" value="dd/mm/yyyy hh:mm:ss"/>
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{departureTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement style="detail-style" x="1415" y="0" width="90" height="15" uuid="e53a23b2-0bb4-48ad-b1b6-881a65b6b95b">
+					<property name="net.sf.jasperreports.export.xls.pattern" value="dd/mm/yyyy hh:mm:ss"/>
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{arrivalTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement style="detail-style" x="1505" y="0" width="75" height="15" uuid="e3d5de3c-0b01-47a5-a815-699628967582">
+					<property name="net.sf.jasperreports.export.xls.pattern" value="dd/mm/yyyy hh:mm:ss"/>
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{tamper}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="1580" y="0" width="80" height="15" uuid="ca9d2458-6465-43cb-a797-c22718e5cd94">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{resultOrg}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="1660" y="0" width="80" height="15" uuid="682fbad2-fe44-4435-a03a-8da52d23f0ce">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{resultDest}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail-style" x="588" y="0" width="80" height="15" uuid="4515d65a-22a2-4dae-90f3-a0ac5195788c">
+					<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{driver}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

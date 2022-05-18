@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+
+   <fontFamily name="TH Sarabun New">
+		<normal>
+			<ttf><![CDATA[fonts/THSarabunNew/THSarabunNew.ttf]]></ttf>
+		</normal>
+		<bold>
+			<ttf><![CDATA[fonts/THSarabunNew/THSarabunNew Bold.ttf]]></ttf>
+		</bold>
+		<italic>
+			<ttf><![CDATA[fonts/THSarabunNew/THSarabunNew Italic.ttf]]></ttf>
+		</italic>
+		<boldItalic>
+			<ttf><![CDATA[fonts/THSarabunNew/THSarabunNew BoldItalic.ttf]]></ttf>
+		</boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts/>
+	</fontFamily>
+</fontFamilies>

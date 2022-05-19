@@ -83,6 +83,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 			.antMatchers(HttpMethod.OPTIONS)
 			.antMatchers("/version/**")
+			.antMatchers("/api/**")
 			.antMatchers("/actuator/**");
 	}
 

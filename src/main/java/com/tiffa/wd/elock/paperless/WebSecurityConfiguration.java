@@ -30,23 +30,23 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private TiffaUserDetailsService userDetailsService;
-	
+
 	/** For Authentication Server **/
-	
+
 	@Bean
 	public CorsFilter corsFilter(CorsProperties properties) {
 		log.info("Initial CorsFilter : {}", properties);
-		
+
 		CorsConfiguration config = properties.toCorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		
+
 		for (String allowedOrigins : config.getAllowedOrigins()) {
 			log.info("allowedOrigins : {}", allowedOrigins);
 		}
-		
+
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
@@ -55,36 +55,37 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService)
-			.passwordEncoder(passwordEncoder());
+				.passwordEncoder(passwordEncoder());
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			//cors().and()
-			.csrf().csrfTokenRepository(new CookieCsrfTokenRepository())
-			.and().httpBasic()
-			.and().authorizeRequests()
+				// cors().and()
+				.csrf().csrfTokenRepository(new CookieCsrfTokenRepository())
+				.and().httpBasic()
+				.and().authorizeRequests()
 				.anyRequest().authenticated()
-			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and().anonymous().disable()
-			.exceptionHandling().authenticationEntryPoint(new BasicAuthenticationEntryPoint());
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and().anonymous().disable()
+				.exceptionHandling().authenticationEntryPoint(new BasicAuthenticationEntryPoint());
 	}
-	
+
 	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-	
+	public PasswordEncoder passwordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+
 	/** For Resource Server **/
-	
+
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring()
-			.antMatchers(HttpMethod.OPTIONS)
-			.antMatchers("/version/**")
-			.antMatchers("/api/**")
-			.antMatchers("/actuator/**");
+				.antMatchers(HttpMethod.OPTIONS)
+				.antMatchers("/version/**")
+				.antMatchers("/api/**")
+				.antMatchers("/stport02/**")
+				.antMatchers("/actuator/**");
 	}
 
 	@Override
@@ -92,5 +93,5 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	
+
 }

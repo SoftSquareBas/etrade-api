@@ -1,4 +1,4 @@
-package com.tiffa.wd.elock.paperless.core.web.po.rt.entity;
+package com.tiffa.wd.elock.paperless.core.entity;
 
 import java.io.Serializable;
 

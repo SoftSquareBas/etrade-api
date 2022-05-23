@@ -1,4 +1,4 @@
-package com.tiffa.wd.elock.paperless.core.web.po.rt.model;
+package com.tiffa.wd.elock.paperless.core.model;
 
 import com.tiffa.wd.elock.paperless.core.CommonRequest;
 import com.tiffa.wd.elock.paperless.core.PageRequest;
@@ -13,6 +13,8 @@ import lombok.ToString;
 public class Stport02Model extends CommonRequest implements PageRequest {
 
     private String poTypeCode;
+
+    private String id;
 
     private String poTypeDesc;
 

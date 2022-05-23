@@ -1,6 +1,6 @@
-package com.tiffa.wd.elock.paperless.core.web.po.rt.repository;
+package com.tiffa.wd.elock.paperless.core.repository;
 
-import com.tiffa.wd.elock.paperless.core.web.po.rt.entity.DbPoType;
+import com.tiffa.wd.elock.paperless.core.entity.DbPoType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

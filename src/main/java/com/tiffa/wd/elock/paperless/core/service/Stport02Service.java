@@ -1,13 +1,14 @@
-package com.tiffa.wd.elock.paperless.core.web.po.rt.service;
+package com.tiffa.wd.elock.paperless.core.service;
 
 import com.tiffa.wd.elock.paperless.core.GridData;
 import com.tiffa.wd.elock.paperless.core.Sort;
+import com.tiffa.wd.elock.paperless.core.entity.DbPoType;
+import com.tiffa.wd.elock.paperless.core.model.Stport02Model;
 import com.tiffa.wd.elock.paperless.core.repository.CoreRepository;
+import com.tiffa.wd.elock.paperless.core.repository.PoTypeRepository;
 import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
 import com.tiffa.wd.elock.paperless.core.repository.SqlSort;
-import com.tiffa.wd.elock.paperless.core.web.po.rt.entity.DbPoType;
-import com.tiffa.wd.elock.paperless.core.web.po.rt.model.Stport02Model;
-import com.tiffa.wd.elock.paperless.core.web.po.rt.repository.PoTypeRepository;
+
 import org.springframework.transaction.annotation.Transactional;
 import com.tiffa.wd.elock.paperless.core.Data;
 
@@ -39,6 +40,7 @@ public class Stport02Service {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT  pt.po_type_code AS\"poTypeCode\" ");
         sql.append(" , pt.po_type_desc AS \"poTypeDesc\" ");
+        sql.append(" , pt.oid AS \"id\" ");
         sql.append(" , pt.active AS \"active\" ");
         sql.append(" FROM po_type pt ");
         sql.append(" WHERE 1=1 ");
@@ -53,6 +55,12 @@ public class Stport02Service {
         poTypeRepository.deleteById(model.getPoTypeCode());
         return Data.of();
     }
+
+    // @Transactional
+    // public Data searchDetail(final Stport02Model model) {
+    // poTypeRepository.findById(model.getPoTypeCode());
+    // return Data.of(model);
+    // }
 
     @Transactional
     public Data update(final Stport02Model model) {

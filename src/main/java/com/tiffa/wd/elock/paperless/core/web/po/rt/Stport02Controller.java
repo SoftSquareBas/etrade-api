@@ -1,9 +1,6 @@
-package com.tiffa.wd.elock.paperless.core.web.po.rt.controller;
+package com.tiffa.wd.elock.paperless.core.web.po.rt;
 
 import java.util.concurrent.Callable;
-
-import com.tiffa.wd.elock.paperless.core.web.po.rt.model.Stport02Model;
-import com.tiffa.wd.elock.paperless.core.web.po.rt.service.Stport02Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import com.tiffa.wd.elock.paperless.core.util.Response;
 import com.tiffa.wd.elock.paperless.core.GridData;
+import com.tiffa.wd.elock.paperless.core.model.Stport02Model;
+import com.tiffa.wd.elock.paperless.core.service.Stport02Service;
 
 @Slf4j
 @RestController
@@ -37,6 +36,14 @@ public class Stport02Controller {
 		};
 	}
 
+	// @PostMapping("/searchDetail")
+	// public Callable<Response> searchDetail(@RequestBody Stport02Model model) {
+	// return () -> {
+	// log.info("searchDetail model : {}", model);
+	// return Response.success(stport02service.searchDetail(model));
+	// };
+	// }
+
 	@PostMapping("/delete")
 	public Callable<Response> delete(@RequestBody Stport02Model model) {
 		return () -> {
@@ -52,5 +59,4 @@ public class Stport02Controller {
 			return Response.success(stport02service.update(model));
 		};
 	}
-
 }

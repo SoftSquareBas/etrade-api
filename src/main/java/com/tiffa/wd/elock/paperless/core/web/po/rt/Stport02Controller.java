@@ -23,8 +23,11 @@ public class Stport02Controller {
 	private Stport02Service stport02service;
 
 	@PostMapping("/save")
-	public String save(@RequestBody Stport02Model model) throws Exception {
-		return stport02service.save(model);
+	public Callable<Response> save(@RequestBody Stport02Model model) throws Exception {
+		return () -> {
+			String data = stport02service.save(model);
+			return Response.success();
+		};
 	}
 
 	@PostMapping("/search")

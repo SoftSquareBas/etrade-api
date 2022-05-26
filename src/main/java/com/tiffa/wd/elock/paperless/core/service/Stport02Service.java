@@ -10,6 +10,9 @@ import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
 import com.tiffa.wd.elock.paperless.core.repository.SqlSort;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
+
 import com.tiffa.wd.elock.paperless.core.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +29,17 @@ public class Stport02Service {
     @Autowired
     private CoreRepository coreRepository;
 
-    public String save(Stport02Model model) throws Exception {
+    public Data save(Stport02Model model) throws Exception {
         DbPoType potype = new DbPoType();
         potype.setPoTypeCode(model.getPoTypeCode());
         potype.setPoTypeDesc(model.getPoTypeDesc());
         potype.setActive(model.getActive());
-        String productSave = String.valueOf(poTypeRepository.saveAndFlush(potype).getPoTypeCode());
-        return productSave;
+        String.valueOf(poTypeRepository.saveAndFlush(potype).getPoTypeCode());
+        return searchDetail(model);
+        
     }
+
+
 
     public GridData search(Stport02Model model) {
         SqlParams params = SqlParams.createPageParam(model);
@@ -52,25 +58,30 @@ public class Stport02Service {
 
     @Transactional
     public Data delete(final Stport02Model model) {
+
         poTypeRepository.deleteById(model.getPoTypeCode());
         return Data.of();
     }
 
-    // @Transactional
-    // public Data searchDetail(final Stport02Model model) {
-    // poTypeRepository.findById(model.getPoTypeCode());
-    // return Data.of(model);
-    // }
+    @Transactional
+    public Data searchDetail(final Stport02Model model) {
+        
+        DbPoType potype = poTypeRepository.findById(model.getPoTypeCode()).get();
+        return Data.of(potype);
+
+    }
 
     @Transactional
     public Data update(final Stport02Model model) {
-        DbPoType potype = poTypeRepository.getById(model.getPoTypeCode());
+
+        DbPoType potype = poTypeRepository.findById(model.getPoTypeCode()).get();
+        
         potype.setPoTypeCode(model.getPoTypeCode());
         potype.setPoTypeDesc(model.getPoTypeDesc());
         potype.setActive(model.getActive());
-
+        
         poTypeRepository.saveAndFlush(potype);
-        return Data.of(model);
+        return searchDetail(model);
     }
 
 }

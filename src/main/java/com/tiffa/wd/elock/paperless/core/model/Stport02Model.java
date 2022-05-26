@@ -1,5 +1,7 @@
 package com.tiffa.wd.elock.paperless.core.model;
 
+import java.sql.Timestamp;
+
 import com.tiffa.wd.elock.paperless.core.CommonRequest;
 import com.tiffa.wd.elock.paperless.core.PageRequest;
 
@@ -19,5 +21,11 @@ public class Stport02Model extends CommonRequest implements PageRequest {
     private String poTypeDesc;
 
     private String active;
+
+    // private Timestamp updDate;
+
+    
+
+    
 
 }

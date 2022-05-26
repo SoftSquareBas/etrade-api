@@ -1,13 +1,17 @@
 package com.tiffa.wd.elock.paperless.core.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Data;
+
 
 @Data
 @Entity(name = "po_type")
@@ -25,4 +29,10 @@ public class DbPoType implements Serializable {
 
     @Column(name = "active", length = 1)
     private String active;
+
+    @CreationTimestamp
+    @Column(name = "upd_date", length = 100)
+    private Timestamp updDate;
+
+
 }

@@ -85,7 +85,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/version/**")
 				.antMatchers("/api/**")
 				.antMatchers("/stport02/**")
-				.antMatchers("/actuator/**");
+				.antMatchers("/actuator/**")
+				.antMatchers("/rt02/**");
 	}
 
 	@Override

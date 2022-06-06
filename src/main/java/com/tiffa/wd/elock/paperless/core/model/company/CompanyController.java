@@ -1,4 +1,4 @@
-package com.tiffa.wd.elock.paperless.master.company;
+package com.tiffa.wd.elock.paperless.core.model.company;
 
 import java.util.concurrent.Callable;
 
@@ -31,7 +31,7 @@ public class CompanyController {
 			return Response.success(gridData);
 		};
 	}
-	
+
 	@PostMapping("/load")
 	public Callable<Response> load(@RequestBody CompanyModel model) {
 		return () -> {
@@ -47,7 +47,7 @@ public class CompanyController {
 			return Response.success(companySetupService.loadAccessRight(model));
 		};
 	}
-	
+
 	@PostMapping("/saveAccessRight")
 	public Callable<Response> saveAccessRight(@RequestBody CompanyModel model) {
 		return () -> {
@@ -55,7 +55,7 @@ public class CompanyController {
 			return Response.success(companySetupService.saveAccessRight(model));
 		};
 	}
-	
+
 	@PostMapping("/validate")
 	public Callable<Response> validate(@RequestBody CompanyModel model) {
 		return () -> {

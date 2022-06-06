@@ -47,7 +47,35 @@
 		timeToLiveSeconds="3600">
 		<persistence strategy="localTempSwap"/>
 	</cache>
-	
+
+	<cache name="warehouseComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+
+	<cache name="doctypeComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+
+	<cache name="documentComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+
+	<cache name="employeeComboBox"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off"
+		timeToLiveSeconds="3600">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+
 	<cache name="weightComboBox"
 		memoryStoreEvictionPolicy="LFU"
 		transactionalMode="off"

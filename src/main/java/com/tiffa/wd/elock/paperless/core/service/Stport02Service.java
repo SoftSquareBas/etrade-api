@@ -8,6 +8,7 @@ import com.tiffa.wd.elock.paperless.core.repository.CoreRepository;
 import com.tiffa.wd.elock.paperless.core.repository.PoTypeRepository;
 import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
 import com.tiffa.wd.elock.paperless.core.repository.SqlSort;
+import com.tiffa.wd.elock.paperless.core.util.CoreUtils;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,10 +37,7 @@ public class Stport02Service {
         potype.setActive(model.getActive());
         String.valueOf(poTypeRepository.saveAndFlush(potype).getPoTypeCode());
         return searchDetail(model);
-        
     }
-
-
 
     public GridData search(Stport02Model model) {
         SqlParams params = SqlParams.createPageParam(model);
@@ -50,6 +48,12 @@ public class Stport02Service {
         sql.append(" , pt.active AS \"active\" ");
         sql.append(" FROM po_type pt ");
         sql.append(" WHERE 1=1 ");
+
+        if (CoreUtils.isNotNull(model.getSearch())) {
+            sql.append(
+                    "AND (pt.po_type_code LIKE  :search  OR pt.po_type_desc LIKE  :search  ) ");
+            params.add("search", "%" + model.getSearch() + "%");
+        }
 
         SqlSort sort = SqlSort.create(model, Sort.by("poTypeCode", Direction.ASC),
                 Sort.by("poTypeCode", Direction.ASC), Sort.by("poTypeCode", Direction.ASC));
@@ -65,7 +69,7 @@ public class Stport02Service {
 
     @Transactional
     public Data searchDetail(final Stport02Model model) {
-        
+
         DbPoType potype = poTypeRepository.findById(model.getPoTypeCode()).get();
         return Data.of(potype);
 
@@ -75,11 +79,11 @@ public class Stport02Service {
     public Data update(final Stport02Model model) {
 
         DbPoType potype = poTypeRepository.findById(model.getPoTypeCode()).get();
-        
+
         potype.setPoTypeCode(model.getPoTypeCode());
         potype.setPoTypeDesc(model.getPoTypeDesc());
         potype.setActive(model.getActive());
-        
+
         poTypeRepository.saveAndFlush(potype);
         return searchDetail(model);
     }

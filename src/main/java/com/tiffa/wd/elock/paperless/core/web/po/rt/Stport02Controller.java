@@ -29,8 +29,8 @@ public class Stport02Controller {
 	public Callable<Response> save(@RequestBody Stport02Model model) throws Exception {
 		return () -> {
 			// Data data = stport02service.save(model);
-			return  Response.success(stport02service.save(model));
-			
+			return Response.success(stport02service.save(model));
+
 		};
 	}
 
@@ -59,7 +59,7 @@ public class Stport02Controller {
 		};
 	}
 
-	@PutMapping("/update")
+	@PostMapping("/update")
 	public Callable<Response> update(@RequestBody Stport02Model model) {
 		return () -> {
 			log.info("update model : {}", model);
@@ -71,8 +71,8 @@ public class Stport02Controller {
 	public Callable<Response> searchDetail(@RequestBody Stport02Model model) throws Exception {
 		return () -> {
 			Data data = stport02service.searchDetail(model);
-			return  Response.success(data);
-			
+			return Response.success(data);
+
 		};
 	}
 }

@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString( callSuper = true)
 public class Rt01Model extends CommonRequest implements PageRequest {
     
+    
     private String ouCode;
 
     private String wareCode;

@@ -26,6 +26,13 @@ public class Rt01Controller {
 	@Autowired
 	private Rt01Service rt01Service;
 	
+	@PostMapping("/save")
+	public Callable<Response> save(@RequestBody Rt01Model model) throws Exception {
+		return () -> {
+			return  Response.success(rt01Service.save(model));
+			
+		};
+	}
 
 	@PostMapping("/search")
 	public Callable<Response> search(@RequestBody Rt01Model  model) {

@@ -4,16 +4,19 @@ import com.tiffa.wd.elock.paperless.core.Data;
 import com.tiffa.wd.elock.paperless.core.GridData;
 import com.tiffa.wd.elock.paperless.core.Sort;
 import com.tiffa.wd.elock.paperless.core.entity.Inwarehouse;
+import com.tiffa.wd.elock.paperless.core.entity.InwarehousePk;
 import com.tiffa.wd.elock.paperless.core.model.Rt01Model;
 import com.tiffa.wd.elock.paperless.core.repository.CoreRepository;
 import com.tiffa.wd.elock.paperless.core.repository.InwarehouseRepository;
 import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
 import com.tiffa.wd.elock.paperless.core.repository.SqlSort;
 import com.tiffa.wd.elock.paperless.core.util.CoreUtils;
+import com.tiffa.wd.elock.paperless.core.util.SecurityUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class Rt01Service {
@@ -25,16 +28,19 @@ public class Rt01Service {
     private CoreRepository coreRepository;
 
     public Data save(Rt01Model model) throws Exception {
-        System.out.println(model);
+        
         Inwarehouse warehouse = new Inwarehouse();
-        warehouse.setOuCode(model.getOuCode());
-        warehouse.setWareCode(model.getWareCode());
+        InwarehousePk pk = new InwarehousePk();
+
+        pk.setOuCode(SecurityUtils.getCompanyCode());
+        pk.setWareCode(model.getWareCode());
+        warehouse.setPk(pk);
         warehouse.setWareName(model.getWareName());
         warehouse.setSaleIdBr(model.getSaleIdBr());
         warehouse.setArCodeBr(model.getArCodeBr());
         warehouse.setActive(model.getActive());
         
-        String.valueOf(inwarehouseRepository.saveAndFlush(warehouse).getWareCode());
+        String.valueOf(inwarehouseRepository.saveAndFlush(warehouse).getPk());
         return Data.of(model);
         
         
@@ -70,6 +76,20 @@ public class Rt01Service {
     //     return Data.of(warehouse);
 
     // }
+
+
+    @Transactional
+    public Data delete(final Rt01Model model) {
+
+        InwarehousePk pk = new InwarehousePk();
+
+        pk.setWareCode(model.getWareCode());
+        pk.setOuCode(SecurityUtils.getCompanyCode());
+
+        inwarehouseRepository.deleteById(pk);
+        
+        return Data.of();
+    }
 
 
 

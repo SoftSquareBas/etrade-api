@@ -1,14 +1,9 @@
 package com.tiffa.wd.elock.paperless.core.entity;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
@@ -16,14 +11,10 @@ import lombok.Data;
 @Entity(name = "in_warehouse")
 @Table(name = "in_warehouse")
 
-public class Inwarehouse implements Serializable {
+public class Inwarehouse extends BaseEntity  {
 
     @Id
-    @Column(name = "ou_code", length = 10 )
-    private String ouCode;
-
-    @Column(name = "ware_code", length = 10)
-    private String wareCode;
+    private InwarehousePk pk;
 
     @Column(name = "ware_name", length = 100)
     private String wareName;
@@ -38,10 +29,6 @@ public class Inwarehouse implements Serializable {
     private String saleIdBr;
 
 
-    // @CreationTimestamp
-    // @Column(name = "upd_date")
-    // private Timestamp updDate;
-    
 
 
 

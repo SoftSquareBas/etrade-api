@@ -38,8 +38,17 @@ public class Rt01Controller {
 	public Callable<Response> search(@RequestBody Rt01Model  model) {
 		return () -> {
 			log.info("search model : {}", model);
+			System.out.println("10101010101010101010101010");
 			GridData gridData = rt01Service.search(model);
 			return Response.success(gridData);
+		};
+	}
+
+	@PostMapping("/delete")
+	public Callable<Response> delete(@RequestBody Rt01Model model) {
+		return () -> {
+			log.info("delete model : {}", model);
+			return Response.success(rt01Service.delete(model));
 		};
 	}
 

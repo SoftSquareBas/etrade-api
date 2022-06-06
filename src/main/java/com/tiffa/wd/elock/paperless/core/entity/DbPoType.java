@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @Entity(name = "po_type")
 @Table(name = "po_type")
-public class DbPoType implements Serializable {
+public class DbPoType extends BaseEntity  {
 
     private static final long serialVersionUID = 4460155681154593524L;
 
@@ -30,9 +30,6 @@ public class DbPoType implements Serializable {
     @Column(name = "active", length = 1)
     private String active;
 
-    @CreationTimestamp
-    @Column(name = "upd_date", length = 100)
-    private Timestamp updDate;
 
 
 }

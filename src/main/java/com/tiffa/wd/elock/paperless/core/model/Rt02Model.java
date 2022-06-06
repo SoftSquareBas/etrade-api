@@ -1,6 +1,6 @@
 package com.tiffa.wd.elock.paperless.core.model;
 
-import java.sql.Timestamp;
+
 
 import com.tiffa.wd.elock.paperless.core.CommonRequest;
 import com.tiffa.wd.elock.paperless.core.PageRequest;
@@ -14,9 +14,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Rt02Model extends CommonRequest implements PageRequest {
 
+    private String ouCode;
+
     private String wareCode;
 
-    private String locationiCode;
+    private String locationCode;
 
     private String locationName;
 

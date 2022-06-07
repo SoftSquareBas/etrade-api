@@ -59,12 +59,17 @@ public class Rt02Service {
         InlocationPk pk     = new InlocationPk();
 
         pk.setOuCode(SecurityUtils.getCompanyCode());
+        
         pk.setWareCode(model.getWareCode());
         pk.setLocationCode(model.getLocationCode());
+        location.setPk(pk);
+        System.out.println(pk.getOuCode());
+        System.out.println(pk.getWareCode());
+        System.out.println(pk.getLocationCode());
         location.setLocationName(model.getLocationName());
         location.setActive(model.getActive());
         String.valueOf(inlocationRepository.saveAndFlush(location).getPk());
-        return Data.of(location);
+        return Data.of(model);
         
     }
 
@@ -76,6 +81,7 @@ public class Rt02Service {
         sql.append(" SELECT  il.ware_code AS\"wareCode\" ");
         sql.append(" , il.location_code AS \"locationCode\" ");
         sql.append(" , il.location_name AS  \"locationName\" ");
+        sql.append(" , il.ou_code AS  \"ouCode\" ");
         sql.append(" , il.active AS \"active\" ");
         sql.append(" FROM in_location il  ");
         sql.append(" WHERE 1=1 ");
@@ -92,12 +98,27 @@ public class Rt02Service {
 
     }
     
+    // @Transactional
+    // public Data delete(final Rt02Model model) {
+    //     InlocationPk pk     = new InlocationPk();
+    //     pk.setLocationCode(model.getLocationCode());
+    //     pk.setOuCode(SecurityUtils.getCompanyCode());
+    //     pk.setWareCode(model.getWareCode());
+
+    //     inlocationRepository.deleteById(pk);
+    //     return Data.of();
+    // }
     @Transactional
     public Data delete(final Rt02Model model) {
-        InlocationPk pk     = new InlocationPk();
-        pk.setLocationCode(model.getLocationCode());
-        pk.setOuCode(SecurityUtils.getCompanyCode());
+
+        InlocationPk pk = new InlocationPk();
+
         pk.setWareCode(model.getWareCode());
+        pk.setLocationCode(model.getLocationCode());
+        pk.setOuCode(model.getOuCode());
+        System.out.println(pk.getOuCode());
+        System.out.println(pk.getWareCode());
+        System.out.println(pk.getLocationCode());
 
         inlocationRepository.deleteById(pk);
         return Data.of();
@@ -124,26 +145,21 @@ public class Rt02Service {
 
     @Transactional
     public Data update(final Rt02Model model) {
-        System.out.println("ETest");
+        
         InlocationPk pk     = new InlocationPk();
         pk.setLocationCode(model.getLocationCode());
         pk.setOuCode(model.getOuCode());
         pk.setWareCode(model.getWareCode());
-        System.out.println(pk.getLocationCode());
-        System.out.println(pk.getWareCode());
-        System.out.println(pk.getOuCode());
+        
 
         Inlocation location = inlocationRepository.findById(pk).get();
+
+        location.setLocationName(model.getLocationName());
+        location.setActive(model.getActive());
         
         
-        
-        
-        // location.setLocationName(model.getLocationName());
-        // location.setActive(model.getActive());
-        
-        
-        // inlocationRepository.saveAndFlush(location).getPk();
-        return Data.of(new Inlocation());
+         inlocationRepository.saveAndFlush(location).getPk();
+        return Data.of(location);
     }
 
 

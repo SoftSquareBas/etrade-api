@@ -11,7 +11,7 @@ import lombok.Data;
 @Embeddable
 public class InlocationPk implements Serializable   {
 	
-	private static final long serialVersionUID = 3020566672725684296L;
+	//private static final long serialVersionUID = 3020566672725684296L;
 
 	@Column(name = "ou_code", length = 10)
 	private String ouCode;

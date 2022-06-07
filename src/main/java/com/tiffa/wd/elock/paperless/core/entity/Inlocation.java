@@ -1,6 +1,6 @@
 package com.tiffa.wd.elock.paperless.core.entity;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 // import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @Entity(name = "in_location")
 @Table(name = "in_location")
-public class Inlocation implements Serializable {
+public class Inlocation extends BaseEntity  {
 
     //private static final long serialVersionUID = 4460155681154593524L;
 
@@ -24,14 +24,7 @@ public class Inlocation implements Serializable {
 	@Id
 	private InlocationPk pk;
 
-    @Column(name = "oucode", length = 10)
-    private String ouCode;
-
-    @Column(name = "ware_code", length = 10)
-    private String wareCode;
-
-    @Column(name = "location_code", length = 10)
-    private String locationCode;
+    
 
     @Column(name = "location_name", length = 100)
     private String locationName;

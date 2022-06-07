@@ -3,12 +3,17 @@ package com.tiffa.wd.elock.paperless.core.service;
 import com.tiffa.wd.elock.paperless.core.GridData;
 import com.tiffa.wd.elock.paperless.core.Sort;
 import com.tiffa.wd.elock.paperless.core.entity.Inlocation;
+import com.tiffa.wd.elock.paperless.core.entity.InlocationPk;
 import com.tiffa.wd.elock.paperless.core.model.Rt02Model;
 import com.tiffa.wd.elock.paperless.core.repository.CoreRepository;
  import com.tiffa.wd.elock.paperless.core.repository.InlocationRepository;
 import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
 import com.tiffa.wd.elock.paperless.core.repository.SqlSort;
 import com.tiffa.wd.elock.paperless.core.util.CoreUtils;
+import com.tiffa.wd.elock.paperless.core.util.SecurityUtils;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.javaparser.utils.Log;
 
 // import org.springframework.transaction.annotation.Transactional;
 
@@ -30,28 +35,39 @@ public class Rt02Service {
     @Autowired
     private CoreRepository coreRepository;
 
-    // public Data save(Stport02Model model) throws Exception {
-    //     DbPoType potype = new DbPoType();
-    //     potype.setPoTypeCode(model.getPoTypeCode());
-    //     potype.setPoTypeDesc(model.getPoTypeDesc());
-    //     potype.setActive(model.getActive());
-    //     String.valueOf(poTypeRepository.saveAndFlush(potype).getPoTypeCode());
-    //     return searchDetail(model);
-        
+
+    // public Data save(Rt02Model model) throws Exception {
+    //     System.out.println(model);
+    //     Inlocation location = new Inlocation();
+    //     InlocationPk  pk = new InlocationPk();
+
+    //     pk.setOuCode( SecurityUtils.getCompanyCode());
+    //     pk.setWareCode(model.getWareCode());
+    //     pk.setLocationCode(model.getLocationCode());
+    //     location.setPk(pk);
+    //     location.setLocationName(model.getLocationName());
+    //     location.setActive(model.getActive());
+    //     String.valueOf(inlocationRepository.saveAndFlush(location).getPk());
+    //     System.out.println(location);
+    //     return Data.of(location);
+
     // }
 
 
     public Data save(Rt02Model model) throws Exception {
-        Inlocation inlocation = new Inlocation();
-        inlocation.setOuCode(model.getOuCode());
-        inlocation.setWareCode(model.getWareCode());
-        inlocation.setLocationCode(model.getLocationCode());
-        inlocation.setLocationName(model.getLocationName());
-        inlocation.setActive(model.getActive());
-        String.valueOf(inlocationRepository.saveAndFlush(inlocation).getWareCode());
-        return Data.of(inlocation);
+        Inlocation location = new Inlocation();
+        InlocationPk pk     = new InlocationPk();
+
+        pk.setOuCode(SecurityUtils.getCompanyCode());
+        pk.setWareCode(model.getWareCode());
+        pk.setLocationCode(model.getLocationCode());
+        location.setLocationName(model.getLocationName());
+        location.setActive(model.getActive());
+        String.valueOf(inlocationRepository.saveAndFlush(location).getPk());
+        return Data.of(location);
         
     }
+
 
     public GridData search(Rt02Model model) {
         System.out.println(model);
@@ -75,6 +91,61 @@ public class Rt02Service {
         return coreRepository.searchPagingGridData(sql.toString(), params, sort);
 
     }
+    
+    @Transactional
+    public Data delete(final Rt02Model model) {
+        InlocationPk pk     = new InlocationPk();
+        pk.setLocationCode(model.getLocationCode());
+        pk.setOuCode(SecurityUtils.getCompanyCode());
+        pk.setWareCode(model.getWareCode());
+
+        inlocationRepository.deleteById(pk);
+        return Data.of();
+    }
+
+    @Transactional
+    public Data searchDetail(final Rt02Model model) {
+        InlocationPk pk     = new InlocationPk();
+        pk.setLocationCode(model.getLocationCode());
+        pk.setOuCode(SecurityUtils.getCompanyCode());
+        pk.setWareCode(model.getWareCode());
+
+        Inlocation location = inlocationRepository.findById(pk).get();
+        model.setOuCode(pk.getOuCode());
+        model.setWareCode(pk.getWareCode());
+        model.setLocationCode(pk.getLocationCode());
+        model.setLocationName(location.getLocationName());
+        model.setActive(location.getActive());
+        
+        System.out.println(model);
+        return Data.of(model);
+
+    }
+
+    @Transactional
+    public Data update(final Rt02Model model) {
+        System.out.println("ETest");
+        InlocationPk pk     = new InlocationPk();
+        pk.setLocationCode(model.getLocationCode());
+        pk.setOuCode(model.getOuCode());
+        pk.setWareCode(model.getWareCode());
+        System.out.println(pk.getLocationCode());
+        System.out.println(pk.getWareCode());
+        System.out.println(pk.getOuCode());
+
+        Inlocation location = inlocationRepository.findById(pk).get();
+        
+        
+        
+        
+        // location.setLocationName(model.getLocationName());
+        // location.setActive(model.getActive());
+        
+        
+        // inlocationRepository.saveAndFlush(location).getPk();
+        return Data.of(new Inlocation());
+    }
+
 
     // @Transactional
     // public Data delete(final Rt02Model model) {

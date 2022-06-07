@@ -5,6 +5,6 @@ import com.tiffa.wd.elock.paperless.core.entity.InlocationPk;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InlocationRepository extends JpaRepository<Inlocation, InlocationPk> {
+public interface InlocationRepository extends JpaRepository<Inlocation,InlocationPk> {
 
 }

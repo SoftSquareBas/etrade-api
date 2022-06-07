@@ -9,10 +9,9 @@ import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString( callSuper = true)
+@ToString(callSuper = true)
 public class Rt01Model extends CommonRequest implements PageRequest {
-    
-    
+
     private String ouCode;
 
     private String wareCode;
@@ -24,7 +23,5 @@ public class Rt01Model extends CommonRequest implements PageRequest {
     private String saleIdBr;
 
     private String arCodeBr;
-
-
 
 }

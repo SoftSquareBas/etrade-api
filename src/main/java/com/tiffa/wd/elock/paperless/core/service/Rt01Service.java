@@ -21,14 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class Rt01Service {
 
-
     @Autowired
     private InwarehouseRepository inwarehouseRepository;
     @Autowired
     private CoreRepository coreRepository;
 
     public Data save(Rt01Model model) throws Exception {
-        
+
         Inwarehouse warehouse = new Inwarehouse();
         InwarehousePk pk = new InwarehousePk();
 
@@ -39,14 +38,11 @@ public class Rt01Service {
         warehouse.setSaleIdBr(model.getSaleIdBr());
         warehouse.setArCodeBr(model.getArCodeBr());
         warehouse.setActive(model.getActive());
-        
+
         String.valueOf(inwarehouseRepository.saveAndFlush(warehouse).getPk());
         return Data.of(model);
-        
-        
+
     }
-
-
 
     public GridData search(Rt01Model model) {
         SqlParams params = SqlParams.createPageParam(model);
@@ -60,23 +56,16 @@ public class Rt01Service {
         sql.append(" WHERE 1=1 ");
 
         if (CoreUtils.isNotNull(model.getWareCode())) {
-			sql.append("and iw.ware_code = :wareCode or iw.ware_code like '%'|| :wareCode || '%' or iw.ware_name like '%'|| :wareCode || '%' or iw.active like '%'|| :wareCode || '%' or iw.ar_code_br like '%'|| :wareCode || '%' or iw.sale_id_br like '%'|| :wareCode || '%'");
-			params.add("wareCode", model.getWareCode());
-		}
+            sql.append(
+                    "and iw.ware_code = :wareCode or iw.ware_code like '%'|| :wareCode || '%' or iw.ware_name like '%'|| :wareCode || '%' or iw.active like '%'|| :wareCode || '%' or iw.ar_code_br like '%'|| :wareCode || '%' or iw.sale_id_br like '%'|| :wareCode || '%'");
+            params.add("wareCode", model.getWareCode());
+        }
 
         SqlSort sort = SqlSort.create(model, Sort.by("wareCode", Direction.ASC),
                 Sort.by("wareCode", Direction.ASC), Sort.by("wareCode", Direction.ASC));
         return coreRepository.searchPagingGridData(sql.toString(), params, sort);
-        
+
     }
-
-    // public Data searchDetail(final Rt01Model model) {
-        
-    //     Inwarehouse warehouse = inwarehouseRepository.findById(model.getWareCode()).get();
-    //     return Data.of(warehouse);
-
-    // }
-
 
     @Transactional
     public Data delete(final Rt01Model model) {
@@ -87,12 +76,45 @@ public class Rt01Service {
         pk.setOuCode(SecurityUtils.getCompanyCode());
 
         inwarehouseRepository.deleteById(pk);
-        
+
         return Data.of();
     }
 
+    @Transactional
+    public Data searchDetail(final Rt01Model model) {
 
+        InwarehousePk pk = new InwarehousePk();
+        pk.setWareCode(model.getWareCode());
+        pk.setOuCode(SecurityUtils.getCompanyCode());
+        Inwarehouse inwarehouse = inwarehouseRepository.findById(pk).get();
+        model.setWareCode(pk.getWareCode());
+        model.setOuCode(pk.getOuCode());
+        model.setWareName(inwarehouse.getWareName());
+        model.setSaleIdBr(inwarehouse.getSaleIdBr());
+        model.setArCodeBr(inwarehouse.getArCodeBr());
+        model.setActive(inwarehouse.getActive());
 
-    
+        return Data.of(model);
+
+    }
+
+    @Transactional
+    public Data update(final Rt01Model model) {
+
+        InwarehousePk pk = new InwarehousePk();
+        pk.setWareCode(model.getWareCode());
+        pk.setOuCode(model.getOuCode());
+
+        Inwarehouse warehouse = inwarehouseRepository.findById(pk).get();
+
+        warehouse.setWareName(model.getWareName());
+        warehouse.setSaleIdBr(model.getSaleIdBr());
+        warehouse.setArCodeBr(model.getArCodeBr());
+        warehouse.setActive(model.getActive());
+
+        inwarehouseRepository.saveAndFlush(warehouse).getPk();
+        return Data.of(warehouse);
+
+    }
 
 }

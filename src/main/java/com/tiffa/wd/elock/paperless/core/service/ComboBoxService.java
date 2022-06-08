@@ -50,12 +50,9 @@ public class ComboBoxService {
 		sql.append(" FROM in_doc_type idt ");
 		sql.append(" WHERE 1 = 1 ");
 
-		// sql.append(" AND idt.doc_type = :doctype ");
-		// params.add("doctype", model.getDoctype());
-
-		// if (CoreUtils.isNotEmpty(model.getQuery())) {
-		// sql.append(" AND idt.doc_type LIKE :query");
-		// }
+		if (CoreUtils.isNotEmpty(model.getQuery())) {
+			sql.append(" AND (idt.doc_type LIKE :query OR idt.doc_desc LIKE :query)");
+		}
 
 		sql.append(" ORDER BY idt.doc_desc ASC ");
 		return coreRepository.searchGridData(sql.toString(), params);
@@ -71,38 +68,35 @@ public class ComboBoxService {
 		sql.append(" FROM in_tran_head ith ");
 		sql.append(" WHERE 1 = 1 ");
 
-		// sql.append(" AND ith.doc_type = :doctype ");
-		// params.add("doctype", model.getDoctype());
-
-		// if (CoreUtils.isNotEmpty(model.getQuery())) {
-		// sql.append(" AND ith.doc_type LIKE :query");
-		// }
+		if (CoreUtils.isNotEmpty(model.getQuery())) {
+			sql.append(" AND (ith.doc_no LIKE :query OR ith.doc_type LIKE :query)");
+		}
 
 		sql.append(" ORDER BY ith.doc_type, ith.doc_no ASC ");
 		return coreRepository.searchGridData(sql.toString(), params);
 	}
 
-	// @Cacheable(value = "employeeComboBox", key = "#model")
-	// public GridData searchEmployee(EmployeeComboBox model) {
-	// SqlParams params = SqlParams.createComboBox(model);
+	@Cacheable(value = "employeeComboBox", key = "#model")
+	public GridData searchEmployee(EmployeeComboBox model) {
+		SqlParams params = SqlParams.createComboBox(model);
 
-	// StringBuilder sql = new StringBuilder();
-	// sql.append(" SELECT emp_id AS \"value\", ");
-	// sql.append(
-	// " tit.title_name_tha || COALESCE(t_first_name, '') || ' ' ||
-	// COALESCE(t_last_name, '') AS \"text\" ");
-	// sql.append(" FROM gb_employee emp ");
-	// sql.append(" WHERE 1 = 1 ");
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT emp.emp_id AS \"value\", ");
+		sql.append(
+				" tit.title_name_tha || COALESCE(emp.t_first_name, '') || ' ' ||COALESCE(emp.t_last_name, '') AS \"text\" ");
+		sql.append(" FROM gb_employee emp ");
+		sql.append(" LEFT JOIN db_title tit ON emp.pre_name_id = tit.title_code ");
+		sql.append(" WHERE 1 = 1 ");
 
-	// // sql.append(" AND ith.doc_type = :doctype ");
-	// // params.add("doctype", model.getDoctype());
+		// sql.append(" AND emp.t_first_name= :consigneeFrom ");
+		// params.add("consigneeFrom", model.getConsigneeFrom());
 
-	// // if (CoreUtils.isNotEmpty(model.getQuery())) {
-	// // sql.append(" AND ith.doc_type LIKE :query");
-	// // }
+		if (CoreUtils.isNotEmpty(model.getQuery())) {
+			sql.append(
+					" AND (emp.emp_id LIKE :query OR tit.title_name_tha LIKE :query OR emp.t_first_name LIKE :query OR emp.t_last_name LIKE :query)");
+		}
 
-	// sql.append(" LEFT JOIN db_title tit ON emp.pre_name_id = tit.title_code ");
-	// return coreRepository.searchGridData(sql.toString(), params);
-	// }
+		return coreRepository.searchGridData(sql.toString(), params);
+	}
 
 }

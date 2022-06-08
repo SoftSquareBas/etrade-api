@@ -49,12 +49,11 @@ public class ComboBoxController {
 		};
 	}
 
-	// @PostMapping("/employeeComboBox")
-	// public Callable<Response> searchEmployee(@RequestBody EmployeeComboBox model)
-	// {
-	// return () -> {
-	// log.debug("searchEmployee : {}", model);
-	// return Response.success(comboBoxService.searchEmployee(model));
-	// };
-	// }
+	@PostMapping("/employee")
+	public Callable<Response> searchEmployee(@RequestBody EmployeeComboBox model) {
+		return () -> {
+			log.debug("searchEmployee : {}", model);
+			return Response.success(comboBoxService.searchEmployee(model));
+		};
+	}
 }

@@ -69,4 +69,18 @@ public class Rt01Controller {
 		};
 	}
 
+	@PostMapping("/check")
+	public Data check(@RequestBody Rt01Model check) throws Exception {
+
+		Data data = rt01Service.check(check);
+		return data;
+	}
+
+	@PostMapping("/getarcode")
+	public <DdlModel> GridData getarCode() throws Exception {
+
+		return  rt01Service.getarCode();
+		
+	}
+
 }

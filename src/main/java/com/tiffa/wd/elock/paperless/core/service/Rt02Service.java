@@ -211,7 +211,8 @@ public class Rt02Service {
     //     potype.setActive(model.getActive());
         
     //     poTypeRepository.saveAndFlush(potype);
-    //     return searchDetail(model);
+        // return searchDetail(model);
     // }
 
+    public 
 }

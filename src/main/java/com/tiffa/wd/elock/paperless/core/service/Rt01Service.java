@@ -1,6 +1,7 @@
 package com.tiffa.wd.elock.paperless.core.service;
 
 import com.tiffa.wd.elock.paperless.core.Data;
+import com.tiffa.wd.elock.paperless.core.DdlModel;
 import com.tiffa.wd.elock.paperless.core.GridData;
 import com.tiffa.wd.elock.paperless.core.Sort;
 import com.tiffa.wd.elock.paperless.core.entity.Inwarehouse;
@@ -12,6 +13,8 @@ import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
 import com.tiffa.wd.elock.paperless.core.repository.SqlSort;
 import com.tiffa.wd.elock.paperless.core.util.CoreUtils;
 import com.tiffa.wd.elock.paperless.core.util.SecurityUtils;
+import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
@@ -25,6 +28,26 @@ public class Rt01Service {
     private InwarehouseRepository inwarehouseRepository;
     @Autowired
     private CoreRepository coreRepository;
+
+
+    public Data check(Rt01Model check) throws Exception{
+
+        SqlParams params = SqlParams.createPageParam(check);
+        StringBuilder sql = new StringBuilder();
+
+        sql.append(" SELECT  count(1) ");
+        sql.append(" FROM in_warehouse iw ");
+        sql.append(" WHERE iw.ware_code  = :wareCode  ");
+        if(CoreUtils.isNotNull(check.getUpdDate())){
+            sql.append("and upd_date is null");
+        }
+        
+        params.add("wareCode", check.getWareCode());
+
+         
+
+        return coreRepository.getData(sql.toString(), params);
+    }
 
     public Data save(Rt01Model model) throws Exception {
 
@@ -42,6 +65,18 @@ public class Rt01Service {
         String.valueOf(inwarehouseRepository.saveAndFlush(warehouse).getPk());
         return Data.of(model);
 
+    }
+
+    public <DdlModel> GridData getarCode(){
+        SqlParams params = SqlParams.create();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT ar_code AS\"value\" ");
+        sql.append(",ar_code ||' : '|| COALESCE(ar_name_tha, '')  AS\"label\" ");
+        sql.append("FROM ar_master arm");
+
+
+        return coreRepository.searchGridData(sql.toString(), params);
     }
 
     public GridData search(Rt01Model model) {
@@ -63,7 +98,7 @@ public class Rt01Service {
 
         SqlSort sort = SqlSort.create(model, Sort.by("wareCode", Direction.ASC),
                 Sort.by("wareCode", Direction.ASC), Sort.by("wareCode", Direction.ASC));
-        return coreRepository.searchPagingGridData(sql.toString(), params, sort);
+        return coreRepository.searchGridData(sql.toString(), params, sort);
 
     }
 
@@ -93,6 +128,7 @@ public class Rt01Service {
         model.setSaleIdBr(inwarehouse.getSaleIdBr());
         model.setArCodeBr(inwarehouse.getArCodeBr());
         model.setActive(inwarehouse.getActive());
+        model.setUpdDate(inwarehouse.getUpdDate());
 
         return Data.of(model);
 

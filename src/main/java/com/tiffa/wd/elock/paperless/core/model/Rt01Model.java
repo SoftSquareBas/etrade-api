@@ -1,5 +1,7 @@
 package com.tiffa.wd.elock.paperless.core.model;
 
+import java.sql.Timestamp;
+
 import com.tiffa.wd.elock.paperless.core.CommonRequest;
 import com.tiffa.wd.elock.paperless.core.PageRequest;
 
@@ -23,5 +25,7 @@ public class Rt01Model extends CommonRequest implements PageRequest {
     private String saleIdBr;
 
     private String arCodeBr;
+
+    private Timestamp updDate;
 
 }

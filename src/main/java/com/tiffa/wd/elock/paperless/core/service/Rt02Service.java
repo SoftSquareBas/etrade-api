@@ -97,7 +97,29 @@ public class Rt02Service {
         return coreRepository.searchPagingGridData(sql.toString(), params, sort);
 
     }
-    
+    public Data check(Rt02Model model) {
+
+        System.out.println(model);
+        SqlParams params = SqlParams.createPageParam(model);
+        StringBuilder sql = new StringBuilder();
+
+        
+        sql.append(" SELECT  count(1) ");
+        sql.append(" FROM in_location il  ");
+        sql.append(" WHERE il.ware_code = :wareCode AND il.location_code  = :locationCode");
+        if (CoreUtils.isNotNull(model.getUpdDate())) {
+            sql.append(" and upd_date  is null ");
+            
+        }
+
+        params.add("wareCode", model.getWareCode());
+        params.add("locationCode", model.getLocationCode());
+
+        System.out.println(" Test01");
+        System.out.println(model);
+
+        return coreRepository.getData(sql.toString(), params);
+    }
     // @Transactional
     // public Data delete(final Rt02Model model) {
     //     InlocationPk pk     = new InlocationPk();
@@ -162,6 +184,7 @@ public class Rt02Service {
         return Data.of(location);
     }
 
+    
 
     // @Transactional
     // public Data delete(final Rt02Model model) {

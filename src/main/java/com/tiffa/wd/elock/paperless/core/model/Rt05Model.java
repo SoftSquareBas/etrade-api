@@ -14,20 +14,19 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Rt02Model extends CommonRequest implements PageRequest {
+public class Rt05Model extends CommonRequest implements PageRequest {
 
-    private String ouCode;
+    private String categoreyCode;
 
-    private String wareCode;
+    private String subCategorey;
 
-    private String locationCode;
+    private String categoreyThai;
 
-    private String locationName;
+    private String categoreyEng;
 
     private String active;
-    
+
     private Timestamp updDate;
-    
 
     
 

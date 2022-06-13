@@ -85,7 +85,16 @@ public class Rt02Controller {
 			
 		};
 	}
+	@PostMapping("/check")
+	public Data check(@RequestBody Rt02Model model) throws Exception {
 
+		Data data = rt02service.check(model);
+		System.out.println(model);
+		// Data data = rt04service.save(model);
+		return data;
+
+}
+}
 	// @PostMapping("/searchDetail")
 	// public Callable<Response> searchDetail(@RequestBody Rt02Model model) throws Exception {
 	// 	return () -> {
@@ -94,7 +103,7 @@ public class Rt02Controller {
 			
 	// 	};
 	// }
-}
+
 	// @PostMapping("/searchDetail")
 	// public Callable<Response> searchDetail(@RequestBody Rt02Model model) {
 	// return () -> {

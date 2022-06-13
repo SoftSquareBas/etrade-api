@@ -86,8 +86,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/**")
 				.antMatchers("/stport02/**")
 				.antMatchers("/actuator/**")
+<<<<<<< HEAD
 				.antMatchers("/rt02/**")
 				.antMatchers("/rt05/**");
+=======
+				.antMatchers("/rt01/**")
+				.antMatchers("/rt04/**");
+>>>>>>> mongkol
 	}
 
 	@Override

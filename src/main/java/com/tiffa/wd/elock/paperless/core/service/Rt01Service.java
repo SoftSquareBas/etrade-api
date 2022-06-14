@@ -63,19 +63,38 @@ public class Rt01Service {
         warehouse.setActive(model.getActive());
 
         String.valueOf(inwarehouseRepository.saveAndFlush(warehouse).getPk());
-        return Data.of(model);
+
+        return searchDetail(model);
 
     }
 
-    public <DdlModel> GridData getarCode(){
+    public <DdlModel> GridData getsaleCode(){
         SqlParams params = SqlParams.create();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT emp_id AS \"value\" ");
+        sql.append(" ,emp_id ||' : '|| COALESCE(t_first_name, '') ||' '|| COALESCE(t_last_name, '') AS \"label\" ");
+        sql.append(" FROM gb_employee emp");
+        sql.append(" LEFT JOIN db_title tit ON emp.pre_name_id = tit.title_code ");
+        sql.append(" WHERE emp.ou_code = :v_ou_code OR :v_ou_code IS NULL");
+        sql.append(" AND emp.active = 'Y' ");
+        sql.append(" ORDER BY CAST(emp_id AS VARCHAR)");
+        params.add("v_ou_code","BRM01");
+        System.out.println(params);
+
+        return coreRepository.searchGridData(sql.toString(), params);
+    }
+
+
+    public <DdlModel> GridData getarCode(){
+        SqlParams params = SqlParams.create(); 
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT ar_code AS\"value\" ");
         sql.append(",ar_code ||' : '|| COALESCE(ar_name_tha, '')  AS\"label\" ");
         sql.append("FROM ar_master arm");
 
-
+        
         return coreRepository.searchGridData(sql.toString(), params);
     }
 
@@ -86,14 +105,28 @@ public class Rt01Service {
         sql.append(" , iw.ware_name AS \"wareName\" ");
         sql.append(" , iw.active AS \"active\" ");
         sql.append(" , iw.ar_code_br AS \"arCodeBr\" ");
+        sql.append(" , arm.ar_name_tha as \"arName\" ");
         sql.append(" , iw.sale_id_br AS \"saleIdBr\" ");
+        sql.append(" , emp.t_first_name ||' '|| COALESCE(t_last_name, '') as \"saleName\"");
         sql.append(" FROM in_warehouse iw  ");
+        sql.append(" JOIN ar_master arm ON arm.ar_code = iw.ar_code_br ");
+        sql.append(" JOIN gb_employee emp ON emp.emp_id = iw.sale_id_br ");
+        sql.append(" LEFT JOIN db_title tit ON emp.pre_name_id = tit.title_code");
         sql.append(" WHERE 1=1 ");
 
         if (CoreUtils.isNotNull(model.getWareCode())) {
             sql.append(
-                    "and iw.ware_code = :wareCode or iw.ware_code like '%'|| :wareCode || '%' or iw.ware_name like '%'|| :wareCode || '%' or iw.active like '%'|| :wareCode || '%' or iw.ar_code_br like '%'|| :wareCode || '%' or iw.sale_id_br like '%'|| :wareCode || '%'");
+                    "and iw.ware_code = :wareCode");
+            sql.append(" or iw.ware_name like '%'|| :wareCode || '%'");
+            sql.append(" or iw.ware_code like '%'|| :wareCode || '%'");
+            sql.append(" or iw.active like '%'|| :wareCode || '%'");
+            sql.append(" or iw.sale_id_br like '%'|| :wareCode || '%'");
+            sql.append(" or iw.ar_code_br like '%'|| :wareCode || '%'");
+            sql.append(" or arm.ar_name_tha like '%'|| :wareCode || '%'");
+            sql.append(" or emp.t_first_name like '%'|| :wareCode || '%'");
+            sql.append(" or emp.t_last_name '%'|| :wareCode || '%'");
             params.add("wareCode", model.getWareCode());
+            System.out.println(params);
         }
 
         SqlSort sort = SqlSort.create(model, Sort.by("wareCode", Direction.ASC),
@@ -149,7 +182,8 @@ public class Rt01Service {
         warehouse.setActive(model.getActive());
 
         inwarehouseRepository.saveAndFlush(warehouse).getPk();
-        return Data.of(warehouse);
+
+        return searchDetail(model);
 
     }
 

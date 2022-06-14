@@ -83,4 +83,11 @@ public class Rt01Controller {
 		
 	}
 
+	@PostMapping("/getsalecode")
+	public <DdlModel> GridData getsaleCode() throws Exception {
+
+		return  rt01Service.getsaleCode();
+		
+	}
+
 }

@@ -79,5 +79,12 @@ public class Rt04Controller {
 		return data;
 	}
 
+	@PostMapping("/getGroupCode")
+	public <DdlModel> GridData getGroupCode() throws Exception {
+
+		return  rt04Service.getGroupCode();
+		
+	}
+
 
 }

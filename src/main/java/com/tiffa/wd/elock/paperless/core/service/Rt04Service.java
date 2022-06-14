@@ -26,6 +26,18 @@ public class Rt04Service {
     @Autowired
     private CoreRepository coreRepository;
 
+    public <DdlModel> GridData getGroupCode(){
+        SqlParams params = SqlParams.create(); 
+        StringBuilder sql = new StringBuilder();
+
+        sql.append(" SELECT ig.group_code AS\"value\" ");
+        sql.append(" ,ig.group_code ||' : '|| COALESCE(ig.group_name, '')  AS\"label\" ");
+        sql.append("FROM in_group ig");
+
+        
+        return coreRepository.searchGridData(sql.toString(), params);
+    }
+
     public Data check(Rt04Model check) throws Exception{
 
         SqlParams params = SqlParams.createPageParam(check);
@@ -55,11 +67,11 @@ public class Rt04Service {
         category.setCategoryDescEng(model.getCategoryDescEng());
         category.setActive(model.getActive());
 
-        String.valueOf(incategoryRepository.saveAndFlush(category).getGroupCode());
-
+        String groupCode = String.valueOf(incategoryRepository.saveAndFlush(category).getCategoryCode());
+        Incategory rs = incategoryRepository.findById(groupCode).get();
         
 
-        return Data.of(model);
+        return Data.of(rs);
 
     }
 
@@ -119,7 +131,7 @@ public class Rt04Service {
         category.setCategoryDesc(model.getCategoryDesc());
         category.setCategoryDescEng(model.getCategoryDescEng());
         category.setActive(model.getActive());
-        return Data.of(model);
+        return searchDetail(model);
 
     }
 

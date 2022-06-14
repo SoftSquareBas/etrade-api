@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/demo/master")
+@RequestMapping("/demo/master")
 public class MasterController {
 
 	@Autowired

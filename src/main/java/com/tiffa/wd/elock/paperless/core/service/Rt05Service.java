@@ -46,8 +46,7 @@ public class Rt05Service {
         
         pk.setCategoreyCode(model.getCategoreyCode());
         pk.setSubCategorey(model.getSubCategorey());
-        System.out.println(pk.getCategoreyCode());
-        System.out.println(pk.getSubCategorey());
+        
 
         subcat.setPk(pk);
         subcat.setCategoreyThai(model.getCategoreyThai());  

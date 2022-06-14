@@ -214,5 +214,5 @@ public class Rt02Service {
         // return searchDetail(model);
     // }
 
-    public 
+    
 }

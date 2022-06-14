@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tiffa.wd.elock.paperless.core.ComboBox;
 import com.tiffa.wd.elock.paperless.core.ComboBoxRequest;
-import com.tiffa.wd.elock.paperless.core.DoctypeComboBox;
-import com.tiffa.wd.elock.paperless.core.EmployeeComboBox;
 import com.tiffa.wd.elock.paperless.core.PageRequest;
 import com.tiffa.wd.elock.paperless.core.ValidateRequest;
 import com.tiffa.wd.elock.paperless.core.util.CoreUtils;
@@ -44,30 +41,6 @@ public class SqlParams {
 	}
 
 	public static SqlParams createComboBoxParam(ComboBoxRequest model) {
-		SqlParams params = new SqlParams();
-		params.params.put("query", "%" + model.getQuery() + "%");
-		params.params.put("from", model.getFrom());
-		params.params.put("to", model.getTo());
-		return params;
-	}
-
-	public static SqlParams createComboBox(ComboBox model) {
-		SqlParams params = new SqlParams();
-		params.params.put("query", "%" + model.getQuery() + "%");
-		params.params.put("from", model.getFrom());
-		params.params.put("to", model.getTo());
-		return params;
-	}
-
-	public static SqlParams createComboBox(DoctypeComboBox model) {
-		SqlParams params = new SqlParams();
-		params.params.put("query", "%" + model.getQuery() + "%");
-		params.params.put("from", model.getFrom());
-		params.params.put("to", model.getTo());
-		return params;
-	}
-
-	public static SqlParams createComboBox(EmployeeComboBox model) {
 		SqlParams params = new SqlParams();
 		params.params.put("query", "%" + model.getQuery() + "%");
 		params.params.put("from", model.getFrom());

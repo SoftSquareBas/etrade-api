@@ -12,7 +12,7 @@
 		<persistence strategy="localTempSwap"/>
 	</cache>
 
-	<cache name="doctypeComboBox"
+	<cache name="receiveDoctypeComboBox"
 		memoryStoreEvictionPolicy="LFU"
 		transactionalMode="off"
 		timeToLiveSeconds="3600">

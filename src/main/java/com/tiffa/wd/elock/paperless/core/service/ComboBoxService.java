@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tiffa.wd.elock.paperless.core.ComboBox;
 import com.tiffa.wd.elock.paperless.core.ComboBoxRequest;
-import com.tiffa.wd.elock.paperless.core.DoctypeComboBox;
-import com.tiffa.wd.elock.paperless.core.EmployeeComboBox;
 import com.tiffa.wd.elock.paperless.core.GridData;
 import com.tiffa.wd.elock.paperless.core.repository.CoreRepository;
 import com.tiffa.wd.elock.paperless.core.repository.SqlParams;
@@ -23,8 +20,8 @@ public class ComboBoxService {
 	private CoreRepository coreRepository;
 
 	@Cacheable(value = "warehouseComboBox", key = "#model")
-	public GridData searchWarehouse(ComboBox model) {
-		SqlParams params = SqlParams.createComboBox(model);
+	public GridData searchWarehouse(ComboBoxRequest model) {
+		SqlParams params = SqlParams.createComboBoxParam(model);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT wh.ware_code AS \"value\", ");
@@ -39,28 +36,28 @@ public class ComboBoxService {
 		return coreRepository.searchGridData(sql.toString(), params);
 	}
 
-	@Cacheable(value = "doctypeComboBox", key = "#model")
-	public GridData searchDoctypee(DoctypeComboBox model) {
-		SqlParams params = SqlParams.createComboBox(model);
+	@Cacheable(value = "receiveDoctypeComboBox", key = "#model")
+	public GridData searchReceiveDoctype(ComboBoxRequest model) {
+		SqlParams params = SqlParams.createComboBoxParam(model);
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT idt.main_doc  AS \"mainDoc\", ");
+		sql.append(" SELECT ");
 		sql.append(" idt.doc_type AS \"value\", ");
 		sql.append(" idt.doc_type  || ' : ' || idt.doc_desc AS \"text\" ");
 		sql.append(" FROM in_doc_type idt ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE idt.main_doc = 'FGI' ");
 
 		if (CoreUtils.isNotEmpty(model.getQuery())) {
 			sql.append(" AND (idt.doc_type LIKE :query OR idt.doc_desc LIKE :query)");
 		}
 
-		sql.append(" ORDER BY idt.doc_desc ASC ");
+		sql.append(" ORDER BY idt.doc_type ASC ");
 		return coreRepository.searchGridData(sql.toString(), params);
 	}
 
 	@Cacheable(value = "documentComboBox", key = "#model")
-	public GridData searchDocument(DoctypeComboBox model) {
-		SqlParams params = SqlParams.createComboBox(model);
+	public GridData searchDocument(ComboBoxRequest model) {
+		SqlParams params = SqlParams.createComboBoxParam(model);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT ith.doc_no  AS \"value\", ");
@@ -77,15 +74,14 @@ public class ComboBoxService {
 	}
 
 	@Cacheable(value = "employeeComboBox", key = "#model")
-	public GridData searchEmployee(EmployeeComboBox model) {
-		SqlParams params = SqlParams.createComboBox(model);
+	public GridData searchEmployee(ComboBoxRequest model) {
+		SqlParams params = SqlParams.createComboBoxParam(model);
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT emp.emp_id AS \"value\", ");
+		sql.append(" SELECT DISTINCT emp.emp_id AS \"value\", ");
 		sql.append(
-				" tit.title_name_tha || COALESCE(emp.t_first_name, '') || ' ' ||COALESCE(emp.t_last_name, '') AS \"text\" ");
+				" emp.emp_id || ' : ' || COALESCE(emp.t_name_concat, '') AS \"text\" ");
 		sql.append(" FROM gb_employee emp ");
-		sql.append(" LEFT JOIN db_title tit ON emp.pre_name_id = tit.title_code ");
 		sql.append(" WHERE 1 = 1 ");
 
 		// sql.append(" AND emp.t_first_name= :consigneeFrom ");
@@ -93,10 +89,9 @@ public class ComboBoxService {
 
 		if (CoreUtils.isNotEmpty(model.getQuery())) {
 			sql.append(
-					" AND (emp.emp_id LIKE :query OR tit.title_name_tha LIKE :query OR emp.t_first_name LIKE :query OR emp.t_last_name LIKE :query)");
+					" AND (emp.emp_id LIKE :query OR emp.t_name_concat LIKE :query)");
 		}
 
 		return coreRepository.searchGridData(sql.toString(), params);
 	}
-
 }

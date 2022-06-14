@@ -1,4 +1,4 @@
-package com.tiffa.wd.elock.paperless.master.company;
+package com.tiffa.wd.elock.paperless.core.model.company;
 
 import java.time.LocalDate;
 

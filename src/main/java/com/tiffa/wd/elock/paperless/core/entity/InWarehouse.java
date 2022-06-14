@@ -1,4 +1,4 @@
-package com.tiffa.wd.elock.paperless.core.web.po.rt.entity;
+package com.tiffa.wd.elock.paperless.core.entity;
 
 import java.io.Serializable;
 
@@ -10,18 +10,17 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Data
-@Entity(name = "po_type")
-@Table(name = "po_type")
-public class DbPoType implements Serializable {
+@Entity(name = "in_warehouse")
+@Table(name = "in_warehouse")
+public class InWarehouse implements Serializable {
 
     private static final long serialVersionUID = 4460155681154593524L;
 
     @Id
-    @Column(name = "po_typeCode", length = 4)
-    private String poTypeCode;
+    private InWarehousePK pk;
 
-    @Column(name = "po_type_desc", length = 100)
-    private String poTypeDesc;
+    @Column(name = "ware_name", length = 100)
+    private String wareName;
 
     @Column(name = "active", length = 1)
     private String active;

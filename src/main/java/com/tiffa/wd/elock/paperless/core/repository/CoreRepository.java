@@ -77,8 +77,8 @@ public class CoreRepository {
 		statement.append("    	    SELECT * FROM ").append(SQL_PAGING_NAME).append(", temp_count__ ");
 		statement.append("  	  ) x ");
 		statement.append("		) y ");
-		statement.append("		WHERE y.").append(ROWNUM_COLUMN).append(" >= :offset_ + 1 ");
-		statement.append("			AND y.").append(ROWNUM_COLUMN).append(" < :offset_ + :limit_ + 1 ");
+		statement.append(" WHERE y.").append(ROWNUM_COLUMN).append(" >= :offset_ + 1");
+		statement.append(" AND y.").append(ROWNUM_COLUMN).append(" < :offset_ +:limit_ + 1 ");
 		statement.append(" ) ");
 
 		if (CoreUtils.isNotEmpty(withClauses)) {

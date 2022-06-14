@@ -36,11 +36,12 @@ public final class SecurityUtils {
 	}
 	
 	public static String getCompanyCode() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication instanceof TiffaAuthentication) {
-			return ((TiffaAuthentication) authentication).getCompanyCode();
-		}
-		return null;
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if(authentication instanceof TiffaAuthentication) {
+//			return ((TiffaAuthentication) authentication).getCompanyCode();
+//		}
+//		return null;
+		return "000";
 	}
 	
 	public static Integer getBranchId() {
@@ -68,11 +69,12 @@ public final class SecurityUtils {
 	}
 	
 	public static String getUsername() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication instanceof TiffaAuthentication) {
-			return ((TiffaAuthentication) authentication).getUserLogin();
-		}
-		return null;
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if(authentication instanceof TiffaAuthentication) {
+//			return ((TiffaAuthentication) authentication).getUserLogin();
+//		}
+//		return null;
+		return "admin";
 	}
 
 	public static String getDisplayName() {

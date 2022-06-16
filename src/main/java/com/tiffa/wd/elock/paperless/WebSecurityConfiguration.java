@@ -89,7 +89,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/rt02/**")
 				.antMatchers("/rt05/**")
 				.antMatchers("/rt01/**")
-				.antMatchers("/rt04/**");
+				.antMatchers("/rt04/**")
+				.antMatchers("/rt07/**");
 	}
 
 	@Override

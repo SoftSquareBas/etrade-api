@@ -53,11 +53,21 @@ public class Rt05Service {
         subcat.setCategoreyEng(model.getCategoreyEng());
         subcat.setActive(model.getActive());
         String.valueOf(InsubcatRepository.saveAndFlush(subcat).getPk());
-        return Data.of(model);
+        return searchDetail(model);
         
     }
 
+    public <DdlModel> GridData getCategoreyCode(){
+        SqlParams params = SqlParams.create();
+        StringBuilder sql = new StringBuilder();
 
+        sql.append("SELECT category_code AS\"value\" ");
+        sql.append(",category_code ||' : '|| COALESCE(category_desc, '')  AS\"label\" ");
+        sql.append("FROM in_category ic ");
+
+
+        return coreRepository.searchGridData(sql.toString(), params);
+    }
     public GridData search(Rt05Model model) {
         System.out.println(model);
         SqlParams params = SqlParams.createPageParam(model);

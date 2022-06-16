@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.web.bind.annotation.GetMapping;
 // import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,18 +16,18 @@ import com.tiffa.wd.elock.paperless.core.util.Response;
 import com.tiffa.wd.elock.paperless.core.Data;
 // import com.tiffa.wd.elock.paperless.core.Data;
 import com.tiffa.wd.elock.paperless.core.GridData;
-import com.tiffa.wd.elock.paperless.core.model.Rt05Model;
+import com.tiffa.wd.elock.paperless.core.model.Rt07Model;
 
-import com.tiffa.wd.elock.paperless.core.service.Rt05Service;
+import com.tiffa.wd.elock.paperless.core.service.Rt07Service;
 
 @Slf4j
 @RestController
-@RequestMapping("/rt05")
+@RequestMapping("/rt07")
 
-public class Rt05Controller {
+public class Rt07Controller {
 
 	@Autowired
-	private Rt05Service rt05service;
+	private Rt07Service Rt07ervice;
 
 	// @PostMapping("/save")
 	// public Callable<Response> save(@RequestBody Rt04Model model) throws Exception {
@@ -47,60 +47,60 @@ public class Rt05Controller {
 	// }
 	
 	@PostMapping("/save")
-	public Callable<Response> save(@RequestBody Rt05Model model) throws Exception {
+	public Callable<Response> save(@RequestBody Rt07Model model) throws Exception {
 		return () -> {
 			// Data data = rt04service.save(model);
-			return  Response.success(rt05service.save(model));
+			return  Response.success(Rt07ervice.save(model));
 			
 		};
 	}
 	
 	@PostMapping("/search")
-	public Callable<Response> search(@RequestBody Rt05Model model) {
+	public Callable<Response> search(@RequestBody Rt07Model model) {
 		return () -> {
 			log.info("search model : {}", model);
-			GridData gridData = rt05service.search(model);
+			GridData gridData = Rt07ervice.search(model);
 			return Response.success(gridData);
 		};
 	}
 	@PostMapping("/delete")
-	public Callable<Response> delete(@RequestBody Rt05Model model) {
+	public Callable<Response> delete(@RequestBody Rt07Model model) {
 		return () -> {
 			log.info("delete model : {}", model);
-			return Response.success(rt05service.delete(model));
+			return Response.success(Rt07ervice.delete(model));
 		};
 	}
 
-	@PutMapping("/update")
-	public Callable<Response> update(@RequestBody Rt05Model model) {
-		return () -> {
-			log.info("update model : {}", model);
-			return Response.success(rt05service.update(model));
-		};
-	}
+	// @PutMapping("/update")
+	// public Callable<Response> update(@RequestBody Rt07Model model) {
+	// 	return () -> {
+	// 		log.info("update model : {}", model);
+	// 		return Response.success(Rt07ervice.update(model));
+	// 	};
+	// }
 
 	@PostMapping("/searchDetail")
-	public Callable<Response> searchDetail(@RequestBody Rt05Model model) throws Exception {
+	public Callable<Response> searchDetail(@RequestBody Rt07Model model) throws Exception {
 		return () -> {
-			Data data = rt05service.searchDetail(model);
+			Data data = Rt07ervice.searchDetail(model);
 			return  Response.success(data);
 			
 		};
 	}
 
-	@PostMapping("/check")
-	public Data check(@RequestBody Rt05Model model) throws Exception {
+	// @PostMapping("/check")
+	// public Data check(@RequestBody Rt07Model model) throws Exception {
 
-		Data data = rt05service.check(model);
-		System.out.println(model);
-		// Data data = rt04service.save(model);
-		return data;
+	// 	Data data = Rt07ervice.check(model);
+	// 	System.out.println(model);
+	// 	// Data data = rt04service.save(model);
+	// 	return data;
 
-	}
-	@PostMapping("/getCategoreyCode")
-	public <DdlModel> GridData getCategoreyCode() throws Exception {
+	// }
+	@PostMapping("/getItemCode")
+	public <DdlModel> GridData getItemCode() throws Exception {
 
-		return  rt05service.getCategoreyCode();
+		return  Rt07ervice.getItemCode();
 		
 	}
 }

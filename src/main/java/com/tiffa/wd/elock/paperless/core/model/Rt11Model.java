@@ -2,6 +2,7 @@ package com.tiffa.wd.elock.paperless.core.model;
 
 
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 // import java.sql.Timestamp;
@@ -33,7 +34,7 @@ public class Rt11Model extends CommonRequest implements PageRequest {
     private Integer yeAr;
     private Integer perIod;
 
-    // private Timestamp updDate;
+     private Timestamp updDate;
 
     
 

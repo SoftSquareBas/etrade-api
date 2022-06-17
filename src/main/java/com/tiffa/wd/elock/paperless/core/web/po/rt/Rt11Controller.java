@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.web.bind.annotation.GetMapping;
 // import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +22,12 @@ import com.tiffa.wd.elock.paperless.core.service.Rt11Service;
 
 @Slf4j
 @RestController
-@RequestMapping("/rt07")
+@RequestMapping("/rt11")
 
-public class Rt07Controller {
+public class Rt11Controller {
 
 	@Autowired
-	private Rt07Service Rt07ervice;
+	private Rt11Service Rt11ervice;
 
 	// @PostMapping("/save")
 	// public Callable<Response> save(@RequestBody Rt04Model model) throws Exception {
@@ -47,62 +47,62 @@ public class Rt07Controller {
 	// }
 	
 	@PostMapping("/save")
-	public Callable<Response> save(@RequestBody Rt07Model model) throws Exception {
+	public Callable<Response> save(@RequestBody Rt11Model model) throws Exception {
 		return () -> {
 			// Data data = rt04service.save(model);
-			return  Response.success(Rt07ervice.save(model));
+			return  Response.success(Rt11ervice.save(model));
 			
 		};
 	}
 	
 	@PostMapping("/search")
-	public Callable<Response> search(@RequestBody Rt07Model model) {
+	public Callable<Response> search(@RequestBody Rt11Model model) {
 		return () -> {
 			log.info("search model : {}", model);
-			GridData gridData = Rt07ervice.search(model);
+			GridData gridData = Rt11ervice.search(model);
 			return Response.success(gridData);
 		};
 	}
 	@PostMapping("/delete")
-	public Callable<Response> delete(@RequestBody Rt07Model model) {
+	public Callable<Response> delete(@RequestBody Rt11Model model) {
 		return () -> {
 			log.info("delete model : {}", model);
-			return Response.success(Rt07ervice.delete(model));
+			return Response.success(Rt11ervice.delete(model));
 		};
 	}
 
-	// @PutMapping("/update")
-	// public Callable<Response> update(@RequestBody Rt07Model model) {
-	// 	return () -> {
-	// 		log.info("update model : {}", model);
-	// 		return Response.success(Rt07ervice.update(model));
-	// 	};
-	// }
+	@PutMapping("/update")
+	public Callable<Response> update(@RequestBody Rt11Model model) {
+		return () -> {
+			log.info("update model : {}", model);
+			return Response.success(Rt11ervice.update(model));
+		};
+	}
 
 	@PostMapping("/searchDetail")
-	public Callable<Response> searchDetail(@RequestBody Rt07Model model) throws Exception {
+	public Callable<Response> searchDetail(@RequestBody Rt11Model model) throws Exception {
 		return () -> {
-			Data data = Rt07ervice.searchDetail(model);
+			Data data = Rt11ervice.searchDetail(model);
 			return  Response.success(data);
 			
 		};
 	}
 
 	// @PostMapping("/check")
-	// public Data check(@RequestBody Rt07Model model) throws Exception {
+	// public Data check(@RequestBody Rt11Model model) throws Exception {
 
-	// 	Data data = Rt07ervice.check(model);
+	// 	Data data = Rt11ervice.check(model);
 	// 	System.out.println(model);
 	// 	// Data data = rt04service.save(model);
 	// 	return data;
 
 	// }
-	@PostMapping("/getItemCode")
-	public <DdlModel> GridData getItemCode() throws Exception {
+	// @PostMapping("/getItemCode")
+	// public <DdlModel> GridData getItemCode() throws Exception {
 
-		return  Rt07ervice.getItemCode();
+	// 	return  Rt11ervice.getItemCode();
 		
-	}
+	// }
 }
 	
 

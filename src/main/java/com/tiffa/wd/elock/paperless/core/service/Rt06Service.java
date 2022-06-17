@@ -103,7 +103,7 @@ public class Rt06Service {
 
         if (CoreUtils.isNotNull(model.getBrandCode())) {
             sql.append(
-                    "and and ib.brand_code =:brandCode");
+                    " and ib.brand_code =:brandCode");
             sql.append(" or ib.brand_name like '%'|| :brandCode || '%'");
             sql.append(" or ib.brand_name_en  like '%'|| :brandCode || '%'");
             sql.append(" or ib.supplier   like '%'|| :brandCode || '%'");

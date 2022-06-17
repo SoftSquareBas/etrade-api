@@ -25,10 +25,10 @@ public class Inbrand extends BaseEntity {
     @Column(name = "active", length = 1 )
     private String active;
 
-    @Column(name = "exporter", length = 1 )
+    @Column(name = "exporter" )
     private String exporter;
     
-    @Column(name = "supplier", length = 1 )
+    @Column(name = "supplier"  )
     private String supplier;
 
 }
